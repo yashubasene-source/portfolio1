@@ -27,10 +27,13 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Ensure rsync is available
+        run: sudo apt-get update && sudo apt-get install -y rsync
+
       - name: Prepare publish directory
         run: |
           mkdir -p ./_site
-          rsync -av \
+          rsync -a --quiet \
             --exclude '.git' \
             --exclude '.github' \
             --exclude '_site' \
