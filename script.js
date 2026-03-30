@@ -50,23 +50,45 @@ function loadPortfolioData() {
   const data = JSON.parse(JSON.stringify(portfolioDefaults));
 
   // Search here if you ever want to change how admin updates are loaded.
-  // The admin page saves each slot with the key format: "<content-type>-<slot-number>".
-  // Is loop ka kaam: admin.html se save hua data dhoondh kar default data ke upar laga dena.
+  // Supports two formats:
+  // 1) Admin form: "<content-type>-<slot-number>" (e.g., "long-video-1")
+  // 2) Docs/console tests: "portfolio_update_{slot}" (optionally with _{type})
+  // Is loop ka kaam: admin.html se save hua data + console updates dono ko apply karna.
   for (let key in localStorage) {
-    if (key.includes('-') && !key.startsWith('portfolio_')) {
-      try {
+    const storedValue = localStorage.getItem(key);
+    if (storedValue === null) continue;
+
+    try {
+      // Handle documented console/localStorage keys
+      if (key.startsWith('portfolio_update_')) {
+        const override = JSON.parse(storedValue);
+        const remainingKey = key.slice('portfolio_update_'.length);
+        const [slotSegment, typeFromKey] = remainingKey.split('_');
+        const slotFromKey = parseInt(slotSegment, 10);
+        const slotNumber = parseInt(override?.slot ?? slotFromKey, 10);
+        if (Number.isNaN(slotNumber)) continue;
+        const contentType = override?.type || typeFromKey;
+
+        if (contentType && data[contentType] && data[contentType][slotNumber]) {
+          data[contentType][slotNumber] = { ...data[contentType][slotNumber], ...override };
+        }
+        continue;
+      }
+
+      // Handle admin (type-slot) keys
+      if (key.includes('-')) {
         const parts = key.split('-');
         const slotNum = parts.pop();
         const contentType = parts.join('-');
         const slotNumber = parseInt(slotNum, 10);
 
         if (data[contentType] && data[contentType][slotNumber]) {
-          const override = JSON.parse(localStorage.getItem(key));
+          const override = JSON.parse(storedValue);
           data[contentType][slotNumber] = { ...data[contentType][slotNumber], ...override };
         }
-      } catch (error) {
-        console.error('Error loading portfolio data:', error);
       }
+    } catch (error) {
+      console.error('Error loading portfolio data:', error);
     }
   }
 
