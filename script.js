@@ -56,15 +56,18 @@ function loadPortfolioData() {
   // Is loop ka kaam: admin.html se save hua data + console updates dono ko apply karna.
   for (let key in localStorage) {
     const storedValue = localStorage.getItem(key);
-    if (!storedValue) continue;
+    if (storedValue === null) continue;
 
     try {
       // Handle documented console/localStorage keys
       if (key.startsWith('portfolio_update_')) {
         const override = JSON.parse(storedValue);
-        const slotFromKey = parseInt(key.replace('portfolio_update_', '').split('_')[0], 10);
+        const remainingKey = key.slice('portfolio_update_'.length);
+        const [slotSegment, typeFromKey] = remainingKey.split('_');
+        const slotFromKey = parseInt(slotSegment, 10);
         const slotNumber = parseInt(override?.slot ?? slotFromKey, 10);
-        const contentType = override?.type;
+        if (Number.isNaN(slotNumber)) continue;
+        const contentType = override?.type || typeFromKey;
 
         if (contentType && data[contentType] && data[contentType][slotNumber]) {
           data[contentType][slotNumber] = { ...data[contentType][slotNumber], ...override };
