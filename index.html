@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!-- Quick Guide:
+     Hero section     -> intro / first screen
+     Portfolio        -> yahan cards JS se inject hote hain
+     About / Skills   -> static content sections
+     Contact          -> inquiry form
+     Bottom script    -> script.js sari interactivity handle karta hai
+-->
 <!-- ============================================================================
      ANSHAY BASENE PORTFOLIO — COMPLETE CODE DOCUMENTATION
      
@@ -182,248 +189,44 @@
       <h2 class="title reveal">Featured <span>Creative</span> Work</h2>
 
       <div class="portfolio-filters reveal">
+        <!-- In buttons ka kaam: category ke hisab se portfolio cards ko filter karna -->
         <button class="filter-btn active" onclick="filterWork('all',this)">All Work</button>
         <button class="filter-btn" onclick="filterWork('documentary',this)">Documentary</button>
         <button class="filter-btn" onclick="filterWork('educational',this)">Educational</button>
-        <button class="filter-btn" onclick="filterWork('design',this)">Graphic Design</button>
+        <button class="filter-btn" onclick="filterWork('typography',this)">Typography</button>
         <button class="filter-btn" onclick="filterWork('commercial',this)">Commercial</button>
       </div>
 
       <p class="section-sub reveal">Long-Form Videos</p>
-      <div class="portfolio-grid" id="port-grid">
+      <!-- Long-form video cards JS se #port-grid ke andar aate hain -->
+      <div id="port-grid" class="portfolio-grid reveal"></div>
 
-        <div class="port-card reveal" data-cat="documentary"
-          onclick="openLightbox('https://www.youtube.com/embed/IvO_S5sEPrY?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/IvO_S5sEPrY/maxresdefault.jpg" alt="ED Documentary" loading="lazy">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Documentary</p>
-            <h4>ED: Action on Corruption or BJP's Weapon?</h4>
-            <p>Investigative political documentary with deep data analysis &amp; sound design.</p>
-            <div class="port-tags"><span>12 Min</span><span>Political</span><span>Sound Design</span></div>
-          </div>
-        </div>
 
-        <div class="port-card reveal" data-cat="documentary"
-          onclick="openLightbox('https://www.youtube.com/embed/MZxV0dsYfrA?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/MZxV0dsYfrA/maxresdefault.jpg" alt="Liquor Policy" loading="lazy">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Documentary</p>
-            <h4>Liquor Policy Case Explained</h4>
-            <p>Political controversy breakdown with engaging narrative &amp; archival footage.</p>
-            <div class="port-tags"><span>10 Min</span><span>Political</span><span>Archival</span></div>
-          </div>
-        </div>
 
-        <div class="port-card reveal" data-cat="educational"
-          onclick="openLightbox('https://www.youtube.com/embed/keqzmkbFjuk?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/keqzmkbFjuk/maxresdefault.jpg" alt="Recent Trends">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Educational</p>
-            <h4>Recent Trends in Management</h4>
-            <p>High-retention educational module with motion graphics &amp; smooth pacing.</p>
-            <div class="port-tags"><span>Lectures</span><span>Visuals</span><span>9 Min</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="documentary"
-          onclick="openLightbox('https://www.youtube.com/embed/2i8ru-UNhPM?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/2i8ru-UNhPM/maxresdefault.jpg" alt="BJP Documentary">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Documentary</p>
-            <h4>Why is Hate against BJP Increasing?</h4>
-            <p>Comprehensive political documentary with research, motion graphics &amp; pacing.</p>
-            <div class="port-tags"><span>12 Min</span><span>Political</span><span>Sound Design</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="educational"
-          onclick="openLightbox('https://www.youtube.com/embed/SEDPUBFEMo4?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/SEDPUBFEMo4/maxresdefault.jpg" alt="Economic Environment">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Educational</p>
-            <h4>Economic Environment | MBA</h4>
-            <p>Educational content with clean structuring, graphics &amp; smooth flow.</p>
-            <div class="port-tags"><span>MBA</span><span>Lectures</span><span>Visuals</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="educational"
-          onclick="openLightbox('https://www.youtube.com/embed/La4w4EGENLg?autoplay=1')">
-          <div class="port-thumb">
-            <img src="https://img.youtube.com/vi/La4w4EGENLg/maxresdefault.jpg" alt="Conference Communication">
-            <div class="port-overlay"></div>
-            <div class="port-play"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Educational</p>
-            <h4>Conference | Communication</h4>
-            <p>Corporate communication module with clean text integration.</p>
-            <div class="port-tags"><span>Business</span><span>Lectures</span><span>13 Min</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="design">
-          <div class="port-thumb"
-            style="background:linear-gradient(135deg,var(--card2),var(--card)); flex-direction:column; gap:10px;">
-            <i class="fas fa-layer-group" style="font-size:2rem;color:var(--green);opacity:0.5"></i>
-            <span
-              style="font-size:0.65rem;color:var(--muted);letter-spacing:3px;font-family:'Orbitron',sans-serif;">ADDING
-              SOON</span>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Graphic Design</p>
-            <h4>Brand Identity Projects</h4>
-            <p>Logo suites, brand guidelines &amp; visual identity systems.</p>
-            <div class="port-tags"><span>Illustrator</span><span>Branding</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="design">
-          <div class="port-thumb"
-            style="background:linear-gradient(135deg,var(--card2),var(--card)); flex-direction:column; gap:10px;">
-            <i class="fas fa-mobile-alt" style="font-size:2rem;color:#A259FF;opacity:0.5"></i>
-            <span
-              style="font-size:0.65rem;color:var(--muted);letter-spacing:3px;font-family:'Orbitron',sans-serif;">ADDING
-              SOON</span>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Graphic Design</p>
-            <h4>Social Media Templates</h4>
-            <p>Instagram posts, carousel designs &amp; story templates.</p>
-            <div class="port-tags"><span>Photoshop</span><span>Figma</span></div>
-          </div>
-        </div>
-
-        <div class="port-card reveal" data-cat="commercial">
-          <div class="port-thumb"
-            style="background:linear-gradient(135deg,var(--card2),var(--card)); flex-direction:column; gap:10px;">
-            <i class="fas fa-camera-retro" style="font-size:2rem;color:#ea77ff;opacity:0.5"></i>
-            <span style="font-size:0.65rem;color:var(--muted);letter-spacing:3px;font-family:'Orbitron',sans-serif;">IN
-              PRODUCTION</span>
-          </div>
-          <div class="port-info">
-            <p class="port-cat">Commercial</p>
-            <h4>Brand Commercial BTS</h4>
-            <p>Full production — on-location shoot to final edit.</p>
-            <div class="port-tags"><span>Brand</span><span>Coming Soon</span></div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Horizontal Reel Scroll -->
+      <!-- RTL Carousel (Short-Form Reels Horizontal Scroll - Right to Left) -->
       <p class="section-sub reveal">Short-Form Reels</p>
       <div class="reels-section">
         <div class="reels-track-wrapper">
-          <div class="reels-track">
-            <div class="reel-card" onclick="openLightbox('reel1.mp4', true)">
-              <div class="reel-video">
-                <video src="reel1.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Real Estate Reel</h5>
-                <p>Luxury property showcase</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel2.mp4', true)">
-              <div class="reel-video">
-                <video src="reel2.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Motivational Typography</h5>
-                <p>Kinetic text reel</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel3.mp4', true)">
-              <div class="reel-video">
-                <video src="reel3.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Inspiring Textography</h5>
-                <p>Dynamic text animations</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel4.mp4', true)">
-              <div class="reel-video">
-                <video src="reel4.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Kinetic Textography</h5>
-                <p>Fast-paced typography</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel5.mp4', true)">
-              <div class="reel-video">
-                <video src="reel5.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Motion Reel 5</h5>
-                <p>Creative edit</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel6.mp4', true)">
-              <div class="reel-video">
-                <video src="reel6.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Motion Reel 6</h5>
-                <p>Dynamic composition</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel7.mp4', true)">
-              <div class="reel-video">
-                <video src="reel7.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Motion Reel 7</h5>
-                <p>Cinematic grade</p>
-              </div>
-            </div>
-            <div class="reel-card" onclick="openLightbox('reel8.mp4', true)">
-              <div class="reel-video">
-                <video src="reel8.mp4" preload="metadata"></video>
-                <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="reel-info">
-                <h5>Motion Reel 8</h5>
-                <p>Typography motion</p>
-              </div>
-            </div>
+          <!-- Reels cards script.js bana kar yahan inject karta hai -->
+          <div class="reels-track reels-track-rtl" id="reels-track">
+            <!-- Injected by script.js -->
           </div>
         </div>
       </div>
 
-    </div>
-  </section>
+      <!-- Horizontal Graphic Design Scroll (Left to Right) -->
+      <p class="section-sub reveal">Graphic Design Works</p>
+      <div class="reels-section">
+        <div class="reels-track-wrapper">
+          <!-- Graphic cards bhi script.js yahan inject karta hai -->
+          <div class="graphics-track" id="graphics-track">
+            <!-- Injected by script.js -->
+          </div>
+        </div>
+      </div>
 
-  <div class="divider"></div>
+    </div> <!-- Yahan main .container close ho raha hai, dono iske andar hone chahiye -->
+  </section>
 
   <!-- ========== ABOUT SECTION ========== -->
   <section class="section" id="about" style="position:relative; overflow:hidden;">
@@ -459,7 +262,7 @@
       <div class="about-grid">
         <div class="about-img-wrap reveal">
           <div class="about-img">
-            <img src="anshay.png" alt="Anshay Basene" onerror="this.style.display='none'">
+            <img src="N1..png" alt="Anshay Basene" onerror="this.style.display='none'">
           </div>
         </div>
 
@@ -517,9 +320,9 @@
       <p class="desc reveal">Professional-grade tools for video editing and graphic design.</p>
 
       <div class="skills-tabs reveal">
-        <button class="skill-tab active" onclick="switchTab('video')"><i class="fas fa-video"></i> Video
+        <button class="skill-tab active" onclick="switchTab('video', this)"><i class="fas fa-video"></i> Video
           Editing</button>
-        <button class="skill-tab" onclick="switchTab('design')"><i class="fas fa-palette"></i> Graphic Design</button>
+        <button class="skill-tab" onclick="switchTab('design', this)"><i class="fas fa-palette"></i> Graphic Design</button>
       </div>
 
       <!-- VIDEO EDITING PANEL -->
@@ -532,9 +335,6 @@
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe Premiere Pro</h4>
             <p>Cuts, transitions, color correction, audio sync.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <img src="after-effects.png"
@@ -542,26 +342,17 @@
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe After Effects</h4>
             <p>Motion graphics, VFX, kinetic typography.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <img src="davinci-resolve.png" alt="DaVinci Resolve" width="38" height="38"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Cinematic Color Grading</h4>
             <p>Custom LUTs, skin tone correction, mood grading.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <div class="card-icon" style="background:#111;"><i class="fas fa-camera-retro"></i></div>
             <h4>Cinematography</h4>
             <p>On-location shoots, cinematic framing, lighting.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <img
@@ -571,18 +362,11 @@
               onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMjggMTI4Jz48cmVjdCB3aWR0aD0nMTI4JyBoZWlnaHQ9JzEyOCcgcng9JzIwJyBmaWxsPSdibGFjaycvPjxyZWN0IHg9JzYnIHk9JzYnIHdpZHRoPScxMTYnIGhlaWdodD0nMTE2JyByeD0nMTQnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzBwZTRiNScgc3Ryb2tlLXdpZHRoPSc2Jy8+PHRleHQgeD0nNjQnIHk9JzkwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtd2VpZ2h0PSc5MDAnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyMwMGU0YjUnIHRleHQtYW5jaG9yPSdtaWRkbGUnPkF1PC90ZXh0Pjwvc3ZnPg=='">
             <h4>Sound Design &amp; Mixing</h4>
             <p>Audio cleanup, SFX layering, LUFS optimization.</p>
-            <div class="skill-bar-wrap">
-
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <div class="card-icon" style="background:#FF0000;"><i class="fab fa-youtube"></i></div>
             <h4>YouTube Growth Strategy</h4>
             <p>Thumbnails, SEO titles, shorts conversion.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
         </div>
       </div>
@@ -599,9 +383,6 @@
               onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMjggMTI4Jz48cmVjdCB3aWR0aD0nMTI4JyBoZWlnaHQ9JzEyOCcgcng9JzIwJyBmaWxsPSdibGFjaycvPjxyZWN0IHg9JzYnIHk9JzYnIHdpZHRoPScxMTYnIGhlaWdodD0nMTE2JyByeD0nMTQnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzMxQThGRicgc3Ryb2tlLXdpZHRoPSc2Jy8+PHRleHQgeD0nNjQnIHk9JzkwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtd2VpZ2h0PSc5MDAnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyMzMUE4RkYnIHRleHQtYW5jaG9yPSdtaWRkbGUnPlBzPC90ZXh0Pjwvc3ZnPg=='">
             <h4>Adobe Photoshop</h4>
             <p>Photo editing, compositing, thumbnail design.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <img
@@ -611,9 +392,6 @@
               onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMjggMTI4Jz48cmVjdCB3aWR0aD0nMTI4JyBoZWlnaHQ9JzEyOCcgcng9JzIwJyBmaWxsPSdibGFjaycvPjxyZWN0IHg9JzYnIHk9JzYnIHdpZHRoPScxMTYnIGhlaWdodD0nMTE2JyByeD0nMTQnIGZpbGw9J25vbmUnIHN0cm9rZT0nI0ZGOUEwMCcgc3Ryb2tlLXdpZHRoPSc2Jy8+PHRleHQgeD0nNjQnIHk9JzkwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtd2VpZ2h0PSc5MDAnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyNGRjlBMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnPkFpPC90ZXh0Pjwvc3ZnPg=='">
             <h4>Adobe Illustrator</h4>
             <p>Vector graphics, logo design, brand identity.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma"
@@ -621,33 +399,21 @@
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Figma</h4>
             <p>UI/UX design, social media templates.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <div class="card-icon" style="background:#A259FF;"><i class="fas fa-palette"></i></div>
             <h4>Brand Identity Design</h4>
             <p>Logo suites, brand guidelines, color palettes.</p>
-            <div class="skill-bar-wrap">
-              >
-            </div>
           </div>
           <div class="skill-card reveal">
             <div class="card-icon" style="background:#00C896;"><i class="fas fa-mobile-alt"></i></div>
             <h4>Social Media Design</h4>
             <p>Instagram posts, reels covers, story templates.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
           <div class="skill-card reveal">
             <div class="card-icon" style="background:#FF6B6B;"><i class="fas fa-newspaper"></i></div>
             <h4>Print &amp; Poster Design</h4>
             <p>Event posters, banners, flyers, editorial layouts.</p>
-            <div class="skill-bar-wrap">
-
-            </div>
           </div>
         </div>
       </div>
@@ -897,12 +663,15 @@
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <div class="lightbox-inner">
+      <div class="lightbox-title" id="lightbox-title">Preview</div>
       <span class="lightbox-close" onclick="closeLightbox(event)">✕</span>
       <iframe id="lightbox-iframe" src="" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
       <video id="lightbox-video" controls autoplay playsinline
         style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;"></video>
+      <img id="lightbox-image" alt="Preview"
+        style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;">
     </div>
   </div>
 
@@ -930,7 +699,7 @@
   <div class="cursor-dot"></div>
   <div class="cursor-outline"><span class="cursor-text">PLAY</span></div>
 
+  <!-- Main JS file: scroll, animation, dynamic portfolio, lightbox, cursor sab yahin se chalta hai -->
   <script src="script.js"></script>
 </body>
-
 </html>

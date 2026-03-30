@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anshay - Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Basic Dark Theme Setup matching your portfolio */
+    :root {
+      --accent: #a855f7;
+      --bg: #080808;
+      --card: #111111;
+      --border: rgba(255,255,255,0.1);
+      --text: #F0EDE8;
+      --muted: #666;
+    }
+    body {
+      background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
+    }
+    .admin-container {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 40px; width: 100%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .admin-header { text-align: center; margin-bottom: 30px; }
+    .admin-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0 0 10px 0; color: var(--accent); }
+    .admin-header p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--muted); }
+    .form-group select, .form-group input, .form-group textarea {
+      width: 100%; padding: 12px 16px; background: #000; border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; outline: none; box-sizing: border-box;
+    }
+    .form-group select:focus, .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    
+    .submit-btn {
+      width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none;
+      border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;
+    }
+    .submit-btn:hover { background: #c084fc; box-shadow: 0 0 15px rgba(168,85,247,0.4); }
+    
+    #status-msg { margin-top: 15px; text-align: center; font-size: 0.85rem; display: none; padding: 12px; border-radius: 8px; }
+    .success { color: #00C896; background: rgba(0, 200, 150, 0.1); border: 1px solid rgba(0, 200, 150, 0.3); }
+    .error { color: #ff6b6b; background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.3); }
+    
+    .slot-guide { margin-top: 20px; padding: 12px; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 8px; font-size: 0.8rem; color: var(--muted); }
+    .slot-guide strong { color: var(--accent); display: block; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h2>Portfolio Manager</h2>
+      <p>Update your Videos, Reels & Graphics dynamically</p>
+    </div>
+
+    <!-- Is form ka kaam: ek slot ka data localStorage me save karna -->
+    <form id="updateForm">
+      <div class="form-group">
+        <label>Content Type</label>
+        <select id="contentType" required onchange="updateSlotGuide()">
+          <option value="" disabled selected>Select Type...</option>
+          <option value="long-video">Long-Form Video (YouTube)</option>
+          <option value="short-reel">Short-Form Reel (YouTube Shorts / MP4)</option>
+          <option value="graphic">Graphic Design (Image/JPG/PNG)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Select Niche Category</label>
+        <select id="nicheType" required onchange="updateSlotGuide()">
+          <option value="" disabled selected>Select Niche...</option>
+          <option value="typography">Typography</option>
+          <option value="educational">Educational</option>
+          <option value="documentary">Documentary</option>
+          <option value="commercial">Commercial / Real Estate</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Select Slot (1-10)</label>
+        <select id="slotNumber" required onchange="updateSlotGuide()">
+          <option value="" disabled selected>Select Slot...</option>
+          <option value="1">Slot 1</option>
+          <option value="2">Slot 2</option>
+          <option value="3">Slot 3</option>
+          <option value="4">Slot 4</option>
+          <option value="5">Slot 5</option>
+          <option value="6">Slot 6</option>
+          <option value="7">Slot 7</option>
+          <option value="8">Slot 8</option>
+          <option value="9">Slot 9</option>
+          <option value="10">Slot 10</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Title (Auto-generated, editable)</label>
+        <input type="text" id="videoTitle" placeholder="e.g., Luxury Real Estate Showcase" required>
+      </div>
+
+      <div class="form-group">
+        <label>Description (Optional)</label>
+        <textarea id="videoDesc" placeholder="e.g., A detailed breakdown of...  " rows="3" style="resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Media Link (YouTube URL, MP4 file, or Image URL)</label>
+        <input type="text" id="videoLink" placeholder="e.g., https://www.youtube.com/embed/VIDEO_ID or reel2.mp4 or image.jpg" required>
+      </div>
+
+      <div class="form-group">
+        <label>Thumbnail URL (Optional - auto-generated for YouTube)</label>
+        <input type="text" id="thumbnailUrl" placeholder="e.g., https://example.com/thumb.jpg">
+      </div>
+
+      <button type="submit" class="submit-btn">Update Portfolio</button>
+      <div id="status-msg"></div>
+
+      <div id="slot-guide" class="slot-guide">
+        <strong>Slot Rules & Guide:</strong>
+        <span id="guide-text">Select content type and niche to see allowed slots</span>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // ========== SLOT VALIDATION RULES ==========
+    const slotRules = {
+      'long-video': {
+        typography: [1, 2, 3],
+        educational: [4, 5, 6],
+        documentary: [7, 8, 9, 10],
+        commercial: [7, 8, 9, 10]
+      },
+      'short-reel': {
+        typography: [1, 2, 3],
+        educational: [4, 5, 6],
+        documentary: [7, 8, 9, 10],
+        commercial: [7, 8, 9, 10]
+      },
+      'graphic': {
+        typography: [1, 2, 3],
+        educational: [4, 5, 6],
+        documentary: [7, 8, 9, 10],
+        commercial: [7, 8, 9, 10]
+      }
+    };
+
+    // ========== UPDATE SLOT GUIDE ==========
+    // User ko dikhata hai ki selected niche ke liye kaunse slots valid hain.
+    function updateSlotGuide() {
+      const contentType = document.getElementById('contentType').value;
+      const niche = document.getElementById('nicheType').value;
+      const guideText = document.getElementById('guide-text');
+
+      if (!contentType || !niche) {
+        guideText.textContent = 'Select content type and niche to see allowed slots';
+        return;
+      }
+
+      const allowedSlots = slotRules[contentType]?.[niche] || [];
+      guideText.textContent = `✓ ${niche.charAt(0).toUpperCase() + niche.slice(1)} → Slots ${allowedSlots[0]}-${allowedSlots[allowedSlots.length - 1]}`;
+    }
+
+    const contentTypeInput = document.getElementById('contentType');
+    const nicheTypeInput = document.getElementById('nicheType');
+    const slotNumberInput = document.getElementById('slotNumber');
+    const videoTitleInput = document.getElementById('videoTitle');
+    const videoLinkInput = document.getElementById('videoLink');
+    let youtubeTitleRequestId = 0;
+
+    function toTitleCase(text) {
+      return text
+        .replace(/[-_]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, (match) => match.toUpperCase());
+    }
+
+    function extractNameFromLink(link) {
+      if (!link) return '';
+
+      const trimmedLink = link.trim();
+      if (/youtube\.com|youtu\.be/i.test(trimmedLink)) return '';
+
+      const cleanLink = trimmedLink.split('?')[0].split('#')[0];
+      const lastPart = cleanLink.split('/').pop() || '';
+      const fileName = lastPart.replace(/\.[a-z0-9]+$/i, '');
+      return toTitleCase(fileName);
+    }
+
+    function isYouTubeLink(link) {
+      return /youtube\.com|youtu\.be/i.test((link || '').trim());
+    }
+
+    async function fetchYouTubeTitle(link) {
+      const oEmbedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(link)}&format=json`;
+      const response = await fetch(oEmbedUrl);
+      if (!response.ok) throw new Error('YouTube title fetch failed');
+      const data = await response.json();
+      return (data.title || '').trim();
+    }
+
+    function buildAutoTitle() {
+      const contentType = contentTypeInput.value;
+      const niche = nicheTypeInput.value;
+      const slot = slotNumberInput.value;
+      const linkName = extractNameFromLink(videoLinkInput.value);
+
+      const contentLabels = {
+        'long-video': 'Video',
+        'short-reel': 'Reel',
+        'graphic': 'Design'
+      };
+
+      const nicheLabel = niche ? toTitleCase(niche) : '';
+      const typeLabel = contentLabels[contentType] || 'Project';
+
+      if (linkName) return linkName;
+      if (nicheLabel && slot) return `${nicheLabel} ${typeLabel} ${slot}`;
+      if (nicheLabel) return `${nicheLabel} ${typeLabel}`;
+      return '';
+    }
+
+    async function syncAutoTitle(force = false) {
+      const autoTitle = buildAutoTitle();
+      const previousAutoTitle = videoTitleInput.dataset.autoTitle || '';
+      const currentLink = videoLinkInput.value.trim();
+      const requestId = ++youtubeTitleRequestId;
+
+      const shouldAutofill = force || !videoTitleInput.value.trim() || videoTitleInput.value === previousAutoTitle;
+      if (!shouldAutofill) return;
+
+      if (isYouTubeLink(currentLink)) {
+        try {
+          const youtubeTitle = await fetchYouTubeTitle(currentLink);
+          if (requestId !== youtubeTitleRequestId) return;
+          if (youtubeTitle) {
+            videoTitleInput.dataset.autoTitle = youtubeTitle;
+            videoTitleInput.value = youtubeTitle;
+            return;
+          }
+        } catch (error) {
+          // Fallback niche/slot based title agar YouTube title fetch na ho paye.
+        }
+      }
+
+      videoTitleInput.dataset.autoTitle = autoTitle;
+      if (autoTitle) {
+        videoTitleInput.value = autoTitle;
+      }
+    }
+
+    [contentTypeInput, nicheTypeInput, slotNumberInput].forEach((field) => {
+      field.addEventListener('change', () => syncAutoTitle());
+    });
+
+    videoLinkInput.addEventListener('input', () => syncAutoTitle());
+    videoLinkInput.addEventListener('paste', () => setTimeout(() => syncAutoTitle(), 0));
+
+    // ========== FORM SUBMISSION WITH VALIDATION ==========
+    // Form submit par:
+    // 1. values padho
+    // 2. slot validate karo
+    // 3. localStorage me save karo
+    // 4. success message dikhao
+    document.getElementById('updateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const contentType = document.getElementById('contentType').value;
+      const niche = document.getElementById('nicheType').value;
+      const slotNum = parseInt(document.getElementById('slotNumber').value);
+      const title = document.getElementById('videoTitle').value;
+      const description = document.getElementById('videoDesc').value || '';
+      const link = document.getElementById('videoLink').value;
+      const thumbnail = document.getElementById('thumbnailUrl').value || '';
+
+      const statusMsg = document.getElementById('status-msg');
+
+      // ========== VALIDATE SLOT-NICHE RULE ==========
+      const allowedSlots = slotRules[contentType]?.[niche] || [];
+      if (!allowedSlots.includes(slotNum)) {
+        statusMsg.className = 'error';
+        statusMsg.textContent = `❌ Error: ${niche} content must use slots ${allowedSlots[0]}-${allowedSlots[allowedSlots.length - 1]}`;
+        statusMsg.style.display = 'block';
+        return;
+      }
+
+      // ========== SAVE TO LOCALSTORAGE ==========
+      // Search/change this key format only if you also update script.js loadPortfolioData().
+      const key = `${contentType}-${slotNum}`;
+      const updateData = {
+        type: contentType,
+        niche: niche,
+        slot: slotNum,
+        title: title,
+        description: description,
+        link: link,
+        thumbnail: thumbnail
+      };
+
+      localStorage.setItem(key, JSON.stringify(updateData));
+      console.log('Saved to localStorage:', key, updateData);
+
+      // ========== SHOW SUCCESS MESSAGE ==========
+      statusMsg.className = 'success';
+      statusMsg.textContent = `✅ Success! Slot updated. `;
+      statusMsg.innerHTML = `✅ <strong>${contentType.replace('-', ' ')}</strong> at slot <strong>${slotNum}</strong> updated successfully!<br><br><a href="index.html" style="color:#00C896; text-decoration:underline; font-weight:600; cursor:pointer;">← Back to Portfolio</a>`;
+      statusMsg.style.display = 'block';
+
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        statusMsg.style.display = 'none';
+        this.reset();
+        videoTitleInput.dataset.autoTitle = '';
+        updateSlotGuide();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
