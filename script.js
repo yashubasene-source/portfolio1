@@ -142,9 +142,22 @@ function createReelCard(item) {
   // Short reel ke liye card banata hai.
   const card = document.createElement('div');
   card.className = 'reel-card reel-card--reel';
+
+  let posterImg = item.thumbnail;
+  if (!posterImg && item.link) {
+    try {
+      const parsedUrl = new URL(item.link);
+      if (parsedUrl.hostname === 'res.cloudinary.com' || parsedUrl.hostname.endsWith('.cloudinary.com')) {
+        posterImg = item.link.replace(/\.[^/.?#]+(?=[?#]|$)/, ".jpg");
+      }
+    } catch (e) {
+      // Not a valid absolute URL; skip auto-thumbnail generation
+    }
+  }
+
   card.innerHTML = `
     <div class="reel-video">
-      <video src="${item.link}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''} preload="auto" muted playsinline></video>
+      <video src="${item.link}" ${posterImg ? `poster="${posterImg}"` : ''} preload="auto" muted playsinline></video>
       <div class="reel-play-icon"><i class="fas fa-play"></i></div>
     </div>
     <div class="reel-info">
