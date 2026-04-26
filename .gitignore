@@ -1,1 +1,5 @@
-*.mp4
+# MP4 files are tracked via Git LFS (see .gitattributes)
+# Remove the blanket ignore so videos are included in the repo
+
+# Uncomment below ONLY if you want to ignore mp4 entirely (not recommended):
+# *.mp4

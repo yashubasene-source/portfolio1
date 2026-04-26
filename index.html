@@ -46,6 +46,7 @@
 
   <!-- ========== STYLESHEETS & ANIMATIONS LIBRARIES ========== -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="showcase.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -182,50 +183,39 @@
 
   <div class="divider"></div>
 
-  <!-- ========== PORTFOLIO SECTION ========== -->
+  <!-- ========== PORTFOLIO SECTION — 3D MASONRY SHOWCASE ========== -->
   <section class="section" id="portfolio">
     <div class="container">
-      <p class="label reveal">Portfolio</p>
-      <h2 class="title reveal">Featured <span>Creative</span> Work</h2>
 
-      <div class="portfolio-filters reveal">
-        <!-- In buttons ka kaam: category ke hisab se portfolio cards ko filter karna -->
-        <button class="filter-btn active" onclick="filterWork('all',this)">All Work</button>
-        <button class="filter-btn" onclick="filterWork('documentary',this)">Documentary</button>
-        <button class="filter-btn" onclick="filterWork('educational',this)">Educational</button>
-        <button class="filter-btn" onclick="filterWork('typography',this)">Typography</button>
-        <button class="filter-btn" onclick="filterWork('commercial',this)">Commercial</button>
+      <div class="showcase-header">
+        <p class="label reveal">Projects Showcase</p>
+        <h2 class="title reveal">Work That <span>Speaks Volumes</span></h2>
+        <p class="desc reveal">
+          Cinematic videos, bold graphics, and motion that drives real results.
+        </p>
+        <div class="showcase-count" id="sc-count" aria-live="polite"></div>
       </div>
 
-      <p class="section-sub reveal">Long-Form Videos</p>
-      <!-- Long-form video cards JS se #port-grid ke andar aate hain -->
-      <div id="port-grid" class="portfolio-grid reveal"></div>
+      <!-- Filter Tabs -->
+      <nav class="showcase-filters reveal" role="tablist" aria-label="Portfolio category filters">
+        <button class="showcase-tab active" type="button" data-filter="all" role="tab" aria-selected="true">
+          <span class="tab-dot"></span> All Work
+        </button>
+        <button class="showcase-tab" type="button" data-filter="video" role="tab" aria-selected="false">
+          <span class="tab-dot"></span> Videos
+        </button>
+        <button class="showcase-tab" type="button" data-filter="graphic" role="tab" aria-selected="false">
+          <span class="tab-dot"></span> Graphics
+        </button>
+        <button class="showcase-tab" type="button" data-filter="motion" role="tab" aria-selected="false">
+          <span class="tab-dot"></span> Motion
+        </button>
+      </nav>
 
+      <!-- 3D Masonry Grid (populated by showcase.js) -->
+      <div id="showcase-grid" class="masonry-grid" aria-live="polite" aria-label="Portfolio projects grid"></div>
 
-
-      <!-- RTL Carousel (Short-Form Reels Horizontal Scroll - Right to Left) -->
-      <p class="section-sub reveal">Short-Form Reels</p>
-      <div class="reels-section">
-        <div class="reels-track-wrapper">
-          <!-- Reels cards script.js bana kar yahan inject karta hai -->
-          <div class="reels-track reels-track-rtl" id="reels-track">
-            <!-- Injected by script.js -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Horizontal Graphic Design Scroll (Left to Right) -->
-      <p class="section-sub reveal">Graphic Design Works</p>
-      <div class="reels-section">
-        <div class="reels-track-wrapper">
-          <!-- Graphic cards bhi script.js yahan inject karta hai -->
-          <div class="graphics-track" id="graphics-track">
-            <!-- Injected by script.js -->
-          </div>
-        </div>
-      </div>
-
-    </div> <!-- Yahan main .container close ho raha hai, dono iske andar hone chahiye -->
+    </div>
   </section>
 
   <!-- ========== ABOUT SECTION ========== -->
@@ -701,5 +691,7 @@
 
   <!-- Main JS file: scroll, animation, dynamic portfolio, lightbox, cursor sab yahin se chalta hai -->
   <script src="script.js"></script>
+  <!-- Premium 3D Masonry Showcase -->
+  <script src="showcase.js"></script>
 </body>
 </html>
