@@ -45,6 +45,8 @@ const portfolioDefaults = {
   }
 };
 
+let caseStudyMap = {};
+
 function loadPortfolioData() {
   // Keep a fresh copy on every load so saved edits never mutate the defaults object.
   const data = JSON.parse(JSON.stringify(portfolioDefaults));
@@ -110,32 +112,323 @@ function toEmbedUrl(url) {
   return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 }
 
-function createLongVideoCard(item) {
-  // Long-form video ke liye ek card banata hai aur click par lightbox open karta hai.
-  const card = document.createElement('div');
-  card.className = 'port-card reveal';
-  card.dataset.cat = item.niche;
+function formatLabel(value) {
+  if (!value) return '';
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
 
-  const embedUrl = toEmbedUrl(item.link);
-  const videoId = extractYoutubeId(embedUrl);
-  const thumbnail = item.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 'https://via.placeholder.com/400x300?text=Video');
+function getCaseCategory(item, sourceType) {
+  if (sourceType === 'video') return 'video';
+  const text = `${item?.title || ''} ${item?.description || ''}`.toLowerCase();
+  if (text.includes('thumb')) return 'thumbnail';
+  return 'poster';
+}
+
+function getCaseCategoryLabel(category) {
+  if (category === 'thumbnail') return 'Thumbnail';
+  if (category === 'poster') return 'Poster';
+  return 'Video Editing';
+}
+
+function getCaseRatio(category, index) {
+  if (category === 'video') return index % 2 === 0 ? '9 / 16' : '5 / 8';
+  if (category === 'thumbnail') return index % 2 === 0 ? '16 / 9' : '4 / 3';
+  return index % 2 === 0 ? '3 / 4' : '4 / 5';
+}
+
+function isImageUrl(url) {
+  if (!url) return false;
+  return /\.(avif|webp|png|jpe?g|gif|bmp|svg)(\?.*)?$/i.test(url);
+}
+
+function isVideoUrl(url) {
+  if (!url) return false;
+  return /\.(mp4|mov|webm|m4v|mkv)(\?.*)?$/i.test(url);
+}
+
+function parseDriveFileId(url) {
+  if (!url) return null;
+  const dMatch = url.match(/\/d\/([^/]+)/);
+  if (dMatch) return dMatch[1];
+  const idMatch = url.match(/[?&]id=([^&]+)/);
+  if (idMatch) return idMatch[1];
+  return null;
+}
+
+function getPreviewMedia(item, sourceType, fallbackImage) {
+  if (sourceType !== 'video') {
+    return { previewType: 'image', previewUrl: fallbackImage };
+  }
+
+  const raw = (item?.link || '').trim();
+  if (!raw) return { previewType: 'image', previewUrl: fallbackImage };
+
+  if (isVideoUrl(raw)) {
+    return { previewType: 'video', previewUrl: raw };
+  }
+
+  const ytId = extractYoutubeId(raw);
+  if (ytId) {
+    return { previewType: 'iframe', previewUrl: `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0` };
+  }
+
+  const driveId = parseDriveFileId(raw);
+  if (driveId) {
+    return { previewType: 'iframe', previewUrl: `https://drive.google.com/file/d/${driveId}/preview` };
+  }
+
+  if (raw.startsWith('http')) {
+    return { previewType: 'iframe', previewUrl: raw };
+  }
+
+  return { previewType: 'image', previewUrl: fallbackImage };
+}
+
+function resolveCaseImage(item, category, index) {
+  const fallbackPools = {
+    video: ['projects/case-video-01.webp', 'projects/case-video-02.webp', 'projects/case-video-03.webp', 'projects/case-video-04.webp'],
+    thumbnail: ['projects/case-thumb-01.webp', 'projects/case-thumb-02.webp', 'projects/case-thumb-03.webp'],
+    poster: ['projects/case-poster-01.webp', 'projects/case-poster-02.webp', 'projects/case-poster-03.webp']
+  };
+
+  const fallback = fallbackPools[category][index % fallbackPools[category].length];
+  const mediaUrl = item?.thumbnail || item?.link || '';
+  const looksLikeVideo = isVideoUrl(mediaUrl);
+  const looksLikeImage = isImageUrl(mediaUrl);
+
+  if (looksLikeImage && category !== 'video') {
+    if (/^https?:\/\//i.test(mediaUrl)) {
+      return { webp: mediaUrl, fallback: mediaUrl };
+    }
+    return { webp: mediaUrl, fallback };
+  }
+
+  if (category === 'video') {
+    const youtubeId = extractYoutubeId(toEmbedUrl(item?.link || ''));
+    if (youtubeId) {
+      const ytThumb = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+      return { webp: ytThumb, fallback: ytThumb };
+    }
+    if (looksLikeImage) {
+      if (/^https?:\/\//i.test(mediaUrl)) return { webp: mediaUrl, fallback: mediaUrl };
+      return { webp: mediaUrl, fallback };
+    }
+  }
+
+  return { webp: fallback, fallback };
+}
+
+function buildCaseNarrative(item, category) {
+  const nicheLabel = formatLabel(item?.niche || 'creator');
+  if (category === 'thumbnail') {
+    return {
+      problem: item?.problem || `${nicheLabel} videos had weak click-through even with strong topics.`,
+      solution: item?.solution || 'Redesigned thumbnail hierarchy with cleaner hooks, stronger contrast, and intent-based text placement.',
+      result: item?.result || 'CTR improved from around 3% to 9%, resulting in significantly higher early views.'
+    };
+  }
+
+  if (category === 'poster') {
+    return {
+      problem: item?.problem || 'Campaign creatives looked good but message clarity and conversion focus were low.',
+      solution: item?.solution || 'Built a cleaner poster layout with stronger CTA visibility and better mobile readability.',
+      result: item?.result || 'Engagement increased and campaign response rate improved by more than 40%.'
+    };
+  }
+
+  return {
+    problem: item?.problem || `${nicheLabel} edits were not holding attention long enough in key moments.`,
+    solution: item?.solution || 'Optimized pacing, hook placement, and visual rhythm to keep retention high throughout.',
+    result: item?.result || 'Watch time and views increased noticeably, with retention uplift across new uploads.'
+  };
+}
+
+function buildCaseStudyProjects(data) {
+  const projects = [];
+  let index = 0;
+
+  const pushProject = (item, sourceType) => {
+    if (!item || !item.title) return;
+
+    const category = getCaseCategory(item, sourceType);
+    const categoryLabel = getCaseCategoryLabel(category);
+    const ratio = getCaseRatio(category, index);
+    const { webp, fallback } = resolveCaseImage(item, category, index);
+    const previewMedia = getPreviewMedia(item, sourceType, fallback);
+    const { problem, solution, result } = buildCaseNarrative(item, category);
+    const client = item.client || `Client: ${formatLabel(item.niche || 'Content')} Project`;
+    const id = `case-${sourceType}-${item.slot || index + 1}-${index}`;
+
+    projects.push({
+      id,
+      title: item.title,
+      category,
+      categoryLabel,
+      client,
+      problem,
+      solution,
+      result,
+      imageWebp: webp,
+      imageFallback: fallback,
+      ratio,
+      previewType: previewMedia.previewType,
+      previewUrl: previewMedia.previewUrl
+    });
+
+    index += 1;
+  };
+
+  Object.values(data['long-video'] || {}).forEach((item) => pushProject(item, 'video'));
+  Object.values(data['short-reel'] || {}).forEach((item) => pushProject(item, 'video'));
+  Object.values(data.graphic || {}).forEach((item) => pushProject(item, 'design'));
+
+  return projects;
+}
+
+function createCaseStudyCard(item) {
+  // Case-study card banata hai jo click par detailed modal open karta hai.
+  const card = document.createElement('article');
+  card.className = 'port-card reveal';
+  card.dataset.category = item.category;
+  card.dataset.caseId = item.id;
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `View case study for ${item.title}`);
+  card.style.setProperty('--thumb-ratio', item.ratio);
+
+  const hasWebp = /\.webp(\?.*)?$/i.test(item.imageWebp);
+  const primaryImageSrc = hasWebp ? item.imageFallback : item.imageWebp;
+  const webpSourceTag = hasWebp
+    ? `<source srcset="${item.imageWebp}" type="image/webp">`
+    : '';
 
   card.innerHTML = `
     <div class="port-thumb">
-      <img src="${thumbnail}" alt="${item.title}" loading="lazy">
-      <div class="port-overlay"></div>
-      <div class="port-play"><i class="fas fa-play"></i></div>
+      <picture>
+        ${webpSourceTag}
+        <img src="${primaryImageSrc}" alt="${item.title}" loading="lazy" decoding="async">
+      </picture>
+      <div class="port-overlay"><span>View Case Study</span></div>
     </div>
     <div class="port-info">
-      <p class="port-cat">${item.niche.charAt(0).toUpperCase() + item.niche.slice(1)}</p>
+      <p class="port-cat">${item.categoryLabel}</p>
       <h4>${item.title}</h4>
-      <p>${item.description}</p>
-      <div class="port-tags"><span>Dynamic</span><span>${item.niche}</span></div>
+      <p class="port-client">${item.client}</p>
     </div>
   `;
 
-  card.onclick = () => openLightbox(embedUrl, 'iframe', item.title);
+  const openCard = () => openCaseStudy(item.id);
+  card.addEventListener('click', openCard);
+  card.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openCard();
+    }
+  });
+
+  const imageEl = card.querySelector('img');
+  if (imageEl) {
+    imageEl.addEventListener('error', () => {
+      if (imageEl.dataset.fallbackApplied === 'true') return;
+      imageEl.dataset.fallbackApplied = 'true';
+      if (item.imageFallback && imageEl.src !== item.imageFallback) imageEl.src = item.imageFallback;
+    });
+  }
+
   return card;
+}
+
+function openCaseStudy(caseId) {
+  const study = caseStudyMap[caseId];
+  const modal = document.getElementById('case-study-modal');
+  if (!study || !modal) return;
+
+  const imageWrap = document.getElementById('case-study-image-wrap');
+  const titleEl = document.getElementById('case-study-title');
+  const categoryEl = document.getElementById('case-study-category');
+  const clientEl = document.getElementById('case-study-client');
+  const problemEl = document.getElementById('case-study-problem');
+  const solutionEl = document.getElementById('case-study-solution');
+  const resultEl = document.getElementById('case-study-result');
+  const webpSource = document.getElementById('case-study-image-webp');
+  const imageEl = document.getElementById('case-study-image');
+  const videoEl = document.getElementById('case-study-video');
+  const iframeEl = document.getElementById('case-study-iframe');
+
+  if (titleEl) titleEl.textContent = study.title;
+  if (categoryEl) categoryEl.textContent = study.categoryLabel;
+  if (clientEl) clientEl.textContent = study.client;
+  if (problemEl) problemEl.textContent = study.problem;
+  if (solutionEl) solutionEl.textContent = study.solution;
+  if (resultEl) resultEl.textContent = study.result;
+
+  if (imageWrap) imageWrap.style.display = 'none';
+  if (videoEl) {
+    videoEl.pause();
+    videoEl.style.display = 'none';
+    videoEl.src = '';
+  }
+  if (iframeEl) {
+    iframeEl.style.display = 'none';
+    iframeEl.src = '';
+  }
+
+  if (study.previewType === 'video' && videoEl) {
+    videoEl.style.display = 'block';
+    videoEl.src = study.previewUrl;
+    videoEl.currentTime = 0;
+    const playPromise = videoEl.play();
+    if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+  } else if (study.previewType === 'iframe' && iframeEl) {
+    iframeEl.style.display = 'block';
+    iframeEl.src = study.previewUrl;
+  } else if (imageWrap && imageEl) {
+    imageWrap.style.display = 'block';
+    if (webpSource) {
+      if (/\.webp(\?.*)?$/i.test(study.imageWebp)) webpSource.srcset = study.imageWebp;
+      else webpSource.removeAttribute('srcset');
+    }
+    const primaryImageSrc = /\.webp(\?.*)?$/i.test(study.imageWebp)
+      ? study.imageFallback
+      : (study.imageWebp || study.imageFallback);
+    imageEl.dataset.fallbackApplied = 'false';
+    imageEl.src = primaryImageSrc;
+    imageEl.alt = `${study.title} thumbnail`;
+    imageEl.onerror = () => {
+      if (imageEl.dataset.fallbackApplied === 'true') return;
+      imageEl.dataset.fallbackApplied = 'true';
+      if (study.imageFallback && imageEl.src !== study.imageFallback) imageEl.src = study.imageFallback;
+    };
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  lenis.stop();
+}
+
+function closeCaseStudy(event) {
+  const modal = document.getElementById('case-study-modal');
+  if (!modal) return;
+
+  const target = event?.target;
+  const clickedBackdrop = target === modal;
+  const clickedClose = target && typeof target.closest === 'function' && Boolean(target.closest('.case-close'));
+  const shouldClose = !event || clickedBackdrop || clickedClose;
+  if (!shouldClose) return;
+
+  const videoEl = document.getElementById('case-study-video');
+  const iframeEl = document.getElementById('case-study-iframe');
+  if (videoEl) {
+    videoEl.pause();
+    videoEl.src = '';
+  }
+  if (iframeEl) iframeEl.src = '';
+
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  lenis.start();
 }
 
 function createReelCard(item) {
@@ -180,17 +473,20 @@ function createGraphicCard(item) {
 
 function renderPortfolioGrids() {
   // Ye function teen jagah data fill karta hai:
-  // 1. long videos grid
+  // 1. case-study masonry grid
   // 2. reels track
   // 3. graphics track
   const data = loadPortfolioData();
+  const caseStudies = buildCaseStudyProjects(data);
+  caseStudyMap = caseStudies.reduce((acc, item) => {
+    acc[item.id] = item;
+    return acc;
+  }, {});
 
   const portGrid = document.getElementById('port-grid');
   if (portGrid) {
     portGrid.innerHTML = '';
-    for (let i = 1; i <= 10; i += 1) {
-      portGrid.appendChild(createLongVideoCard(data['long-video'][i]));
-    }
+    caseStudies.forEach((item) => portGrid.appendChild(createCaseStudyCard(item)));
   }
 
   const reelsTrack = document.getElementById('reels-track');
@@ -211,11 +507,12 @@ function renderPortfolioGrids() {
 }
 
 const lenis = new Lenis({
-  // Smooth scrolling settings
-  duration: 1.2,
+  // Smooth scrolling settings — mobile pe syncTouch true rakhna zaroori hai
+  duration: window.innerWidth <= 768 ? 0.8 : 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
-  syncTouch: false
+  syncTouch: window.innerWidth <= 768, // Mobile pe native-feel scroll
+  touchMultiplier: 1.5
 });
 
 function raf(time) {
@@ -271,7 +568,8 @@ gsap.to('.hero-left', {
 
 (function initThreeJS() {
   // Hero section ka 3D background yahan banta hai.
-  // Agar canvas na mile to pura block skip ho jata hai.
+  // Mobile pe skip karte hain - Three.js bahut heavy hai low-end devices ke liye.
+  if (window.innerWidth <= 768) return; // Skip on mobile/small screens
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
 
@@ -478,23 +776,8 @@ ScrollTrigger.create({
 });
 
 function attachPortfolioTilt() {
-  // Portfolio cards par mouse move hone par 3D tilt effect lagta hai.
-  document.querySelectorAll('.port-card').forEach((card) => {
-    if (card.dataset.tiltBound === 'true') return;
-
-    card.addEventListener('mousemove', (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width - 0.5) * 10;
-      const y = -((event.clientY - rect.top) / rect.height - 0.5) * 10;
-      card.style.transform = `perspective(600px) rotateX(${y}deg) rotateY(${x}deg) translateY(-4px)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-
-    card.dataset.tiltBound = 'true';
-  });
+  // Masonry cards ke liye extra tilt avoid karte hain taki readability aur hover smooth rahe.
+  return;
 }
 
 function toggleMenu() {
@@ -516,14 +799,26 @@ function switchTab(tab, btn) {
 
 function filterWork(cat, btn) {
   // Portfolio filter buttons ka logic:
-  // selected category ko show karo, baaki cards hide karo.
+  // selected category ko show karo aur smooth masonry transition do.
   document.querySelectorAll('.filter-btn').forEach((button) => button.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
 
   document.querySelectorAll('.port-card').forEach((card) => {
-    const show = cat === 'all' || card.dataset.cat === cat;
-    gsap.to(card, { opacity: show ? 1 : 0, scale: show ? 1 : 0.9, duration: 0.3 });
-    card.style.display = show ? 'block' : 'none';
+    const show = cat === 'all' || card.dataset.category === cat;
+    const existingTimer = card.dataset.hideTimer ? parseInt(card.dataset.hideTimer, 10) : NaN;
+    if (!Number.isNaN(existingTimer)) window.clearTimeout(existingTimer);
+
+    if (show) {
+      card.classList.remove('is-hidden');
+      requestAnimationFrame(() => card.classList.remove('is-hiding'));
+      return;
+    }
+
+    card.classList.add('is-hiding');
+    const hideTimer = window.setTimeout(() => {
+      if (card.classList.contains('is-hiding')) card.classList.add('is-hidden');
+    }, 240);
+    card.dataset.hideTimer = String(hideTimer);
   });
 }
 
@@ -605,7 +900,9 @@ function closeLightbox(event) {
 }
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') });
+  if (event.key !== 'Escape') return;
+  closeLightbox({ target: document.getElementById('lightbox') });
+  closeCaseStudy();
 });
 
 const cursorDot = document.querySelector('.cursor-dot');
@@ -708,6 +1005,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Page fully load hote hi ye startup sequence chalta hai.
   // Isi jagah se dynamic content, track cloning aur hover effects start hote hain.
   renderPortfolioGrids();
+  const activeFilterBtn = document.querySelector('.filter-btn.active');
+  if (activeFilterBtn) filterWork('all', activeFilterBtn);
   initInfiniteGraphicsTrack();
   initReelsRTL();
   initReelCardInteractions();
