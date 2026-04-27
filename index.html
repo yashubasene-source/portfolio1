@@ -47,6 +47,7 @@
   <!-- ========== STYLESHEETS & ANIMATIONS LIBRARIES ========== -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="features.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -100,6 +101,16 @@
     <a href="#contact" onclick="closeMenu()">Hire Me →</a>
   </div>
 
+  <!-- Showreel Hero Background Video -->
+  <div class="hero-video-bg" id="hero-video-bg">
+    <video id="hero-showreel" autoplay muted loop playsinline preload="none"
+      poster="anshay.png"
+      style="display:none">
+      <!-- Replace src with your actual showreel video path or YouTube iframe alternative -->
+      <!-- e.g. <source src="projects/showreel.mp4" type="video/mp4"> -->
+    </video>
+    <div class="hero-video-overlay"></div>
+  </div>
   <!-- ========== HERO SECTION ========== -->
   <section class="hero" id="hero">
     <div class="hero-waveform"></div>
@@ -143,12 +154,19 @@
             I craft cinematic stories and bold visuals — from political documentaries to luxury brand identities. Based
             in Bhopal, working globally.
           </p>
-          <div class="hero-btns reveal" style="align-items:center; gap:20px;">
-            <a href="#portfolio" class="btn btn-primary" style="padding:15px 36px;"><i class="fas fa-play"></i> View
-              Work</a>
+          <!-- Urgency / Availability Scarcity Badge -->
+          <div class="urgency-badge reveal">
+            <span class="urgency-dot"></span>
+            <span>Only <strong>2 slots</strong> open this month</span>
+          </div>
+
+          <div class="hero-btns reveal" style="align-items:center; gap:16px; flex-wrap:wrap;">
+            <a href="#portfolio" class="btn btn-primary" style="padding:15px 36px;"><i class="fas fa-play"></i> View Work</a>
             <a href="#contact" class="btn btn-outline"
-              style="border:1px solid rgba(255,255,255,0.05); color:#fff; padding:15px 36px; background:rgba(255,255,255,0.02)">Hire
-              Me</a>
+              style="border:1px solid rgba(255,255,255,0.05); color:#fff; padding:15px 36px; background:rgba(255,255,255,0.02)">Hire Me</a>
+            <a href="anshay-resume.pdf" download class="btn btn-cv" title="Download Resume / CV">
+              <i class="fas fa-file-arrow-down"></i> CV
+            </a>
           </div>
           <div class="hero-stats reveal" style="margin-top:60px; gap:40px;">
             <div class="hero-stat">
@@ -194,6 +212,31 @@
           Cinematic videos, bold graphics, and motion that drives real results.
         </p>
         <div class="showcase-count" id="sc-count" aria-live="polite"></div>
+      </div>
+
+      <!-- Niche Selector Bar -->
+      <div class="niche-bar reveal" id="niche-bar" role="group" aria-label="Filter by niche">
+        <button class="niche-tag active" data-niche="all" onclick="filterNiche(this, 'all')">
+          <i class="fas fa-th"></i> All Work
+        </button>
+        <button class="niche-tag" data-niche="youtube" onclick="filterNiche(this, 'youtube')">
+          <i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube
+        </button>
+        <button class="niche-tag" data-niche="political" onclick="filterNiche(this, 'political')">
+          <i class="fas fa-landmark" style="color:#FFD700;"></i> Political
+        </button>
+        <button class="niche-tag" data-niche="realestate" onclick="filterNiche(this, 'realestate')">
+          <i class="fas fa-building" style="color:#00C896;"></i> Real Estate
+        </button>
+        <button class="niche-tag" data-niche="educational" onclick="filterNiche(this, 'educational')">
+          <i class="fas fa-graduation-cap" style="color:#31A8FF;"></i> Educational
+        </button>
+        <button class="niche-tag" data-niche="commercial" onclick="filterNiche(this, 'commercial')">
+          <i class="fas fa-briefcase" style="color:#FF9A00;"></i> Commercial
+        </button>
+        <button class="niche-tag" data-niche="graphics" onclick="filterNiche(this, 'graphics')">
+          <i class="fas fa-palette" style="color:#a855f7;"></i> Graphics
+        </button>
       </div>
 
       <!-- Filter Tabs -->
@@ -767,6 +810,28 @@
     </div>
   </div>
 
+  <!-- ===== CLIENT REVIEW TICKER ===== -->
+  <div class="review-ticker-wrap">
+    <div class="review-ticker-label"><i class="fab fa-whatsapp"></i> Client Reviews</div>
+    <div class="review-ticker" id="review-ticker">
+      <div class="review-ticker-track" id="review-track">
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Editing was cinematic, client loved it!" <span class="review-who">â€” Aaditya Sir</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Delivered in 24h, quality was top notch" <span class="review-who">â€” YouTube Creator</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Political documentary looked professional AF" <span class="review-who">â€” Documentary Client</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Real estate walkthrough exceeded expectations" <span class="review-who">â€” Real Estate Agent</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Thumbnail CTR went from 3% to 9% after redesign!" <span class="review-who">â€” Content Creator</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Best video editor I have worked with, very professional" <span class="review-who">â€” Brand Client</span></div>
+        <!-- duplicated for seamless loop -->
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Editing was cinematic, client loved it!" <span class="review-who">â€” Aaditya Sir</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Delivered in 24h, quality was top notch" <span class="review-who">â€” YouTube Creator</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Political documentary looked professional AF" <span class="review-who">â€” Documentary Client</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Real estate walkthrough exceeded expectations" <span class="review-who">â€” Real Estate Agent</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Thumbnail CTR went from 3% to 9% after redesign!" <span class="review-who">â€” Content Creator</span></div>
+        <div class="review-chip"><span class="review-stars">â˜…â˜…â˜…â˜…â˜…</span> "Best video editor I have worked with, very professional" <span class="review-who">â€” Brand Client</span></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container">
@@ -834,5 +899,6 @@
   <!-- Premium 3D Masonry Showcase -->
   <script src="showcase.js"></script>
   <script src="mobile-perf.js"></script>
+  <script src="features.js"></script>
 </body>
 </html>
