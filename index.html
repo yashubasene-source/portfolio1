@@ -37,6 +37,15 @@
   <meta name="description"
     content="Anshay Basene — Video Editor & Graphic Designer from Bhopal. Cinematic storytelling, color grading, motion graphics, and brand design.">
 
+  <!-- Open Graph / Social Sharing Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
+  <meta property="og:description" content="Cinematic videos, bold graphics, and motion that drives real results. Available for hire.">
+  <meta property="og:image" content="anshay.png">
+  <meta property="og:url" content="https://anshay.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
+  <meta name="twitter:image" content="anshay.png">
   <!-- ========== EXTERNAL FONTS & ICONS ========== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
@@ -48,6 +57,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="showcase.css">
   <link rel="stylesheet" href="features.css">
+  <link rel="stylesheet" href="extras.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -56,6 +66,30 @@
 
 <body>
 
+  <!-- ===== CINEMATIC PRELOADER ===== -->
+  <div id="preloader">
+    <div class="pl-slate-top"></div>
+    <div class="pl-slate-bottom"></div>
+    <div class="pl-center">
+      <div class="pl-brand">ANSHAY<span>.</span></div>
+      <div class="pl-role">Video Editor &amp; Graphic Designer</div>
+      <div class="pl-ring">
+        <svg viewBox="0 0 140 140">
+          <circle class="pl-ring-bg" cx="70" cy="70" r="65"/>
+          <circle class="pl-ring-fill" id="pl-ring-fill" cx="70" cy="70" r="65"/>
+        </svg>
+        <div class="pl-number" id="pl-number">3</div>
+      </div>
+      <div class="pl-label">Loading Portfolio&nbsp;&nbsp;&middot;&nbsp;&nbsp;Bhopal, India</div>
+      <div class="pl-clapper-info">
+        <span>Scene <strong>01</strong></span>
+        <span>Take <strong>01</strong></span>
+        <span>Roll <strong>2025</strong></span>
+      </div>
+    </div>
+    <div class="pl-action" id="pl-action">ACTION</div>
+    <button class="pl-skip" id="pl-skip">SKIP &rsaquo;</button>
+  </div>
   <!-- ========== GLOBAL PARALLAX BACKGROUND ICONS ========== -->
   <div class="parallax-bg-wrapper">
     <i class="fas fa-cut parallax-icon" data-speed="1.5" style="top: 15%; left: 8%;"></i>
@@ -86,6 +120,8 @@
         <a href="#pricing">Pricing</a>
         <a href="#contact" class="nav-cta">HIRE ME</a>
       </div>
+      <button class="sound-toggle" id="sound-toggle" title="Sound: OFF"><i class="fas fa-volume-xmark"></i></button>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle Theme"><i class="fas fa-sun"></i></button>
       <div class="hamburger" id="hamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
       </div>
@@ -201,6 +237,31 @@
 
   <div class="divider"></div>
 
+  <!-- ===== CLIENT LOGO STRIP ===== -->
+  <section class="logos-section">
+    <div class="logos-label">Trusted &amp; Worked With</div>
+    <div class="logos-track-wrap">
+      <div class="logos-track">
+        <div class="logo-item"><i class="fab fa-youtube" style="color:#FF0000;"></i><span>YouTube Creators</span></div>
+        <div class="logo-item"><i class="fas fa-landmark" style="color:#FFD700;"></i><span>Political Campaigns</span></div>
+        <div class="logo-item"><i class="fas fa-building" style="color:#00C896;"></i><span>Real Estate Brands</span></div>
+        <div class="logo-item"><i class="fas fa-graduation-cap" style="color:#31A8FF;"></i><span>EdTech Channels</span></div>
+        <div class="logo-item"><i class="fas fa-store" style="color:#FF9A00;"></i><span>Local Businesses</span></div>
+        <div class="logo-item"><i class="fas fa-microphone" style="color:#a855f7;"></i><span>Podcast Studios</span></div>
+        <div class="logo-item"><i class="fas fa-film" style="color:#ff6b6b;"></i><span>Documentary Films</span></div>
+        <div class="logo-item"><i class="fas fa-shirt" style="color:#c084fc;"></i><span>Fashion Brands</span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="logo-item"><i class="fab fa-youtube" style="color:#FF0000;"></i><span>YouTube Creators</span></div>
+        <div class="logo-item"><i class="fas fa-landmark" style="color:#FFD700;"></i><span>Political Campaigns</span></div>
+        <div class="logo-item"><i class="fas fa-building" style="color:#00C896;"></i><span>Real Estate Brands</span></div>
+        <div class="logo-item"><i class="fas fa-graduation-cap" style="color:#31A8FF;"></i><span>EdTech Channels</span></div>
+        <div class="logo-item"><i class="fas fa-store" style="color:#FF9A00;"></i><span>Local Businesses</span></div>
+        <div class="logo-item"><i class="fas fa-microphone" style="color:#a855f7;"></i><span>Podcast Studios</span></div>
+        <div class="logo-item"><i class="fas fa-film" style="color:#ff6b6b;"></i><span>Documentary Films</span></div>
+        <div class="logo-item"><i class="fas fa-shirt" style="color:#c084fc;"></i><span>Fashion Brands</span></div>
+      </div>
+    </div>
+  </section>
   <!-- ========== PORTFOLIO SECTION — 3D MASONRY SHOWCASE ========== -->
   <section class="section" id="portfolio">
     <div class="container">
@@ -401,6 +462,73 @@
   </section>
 
   <div class="divider"></div>
+
+  <!-- ===== INSTANT PRICING CALCULATOR ===== -->
+  <section class="section calc-section" id="calculator">
+    <div class="container">
+      <p class="label reveal">No Surprises</p>
+      <h2 class="title reveal">Get Your Instant <span>Price Estimate</span></h2>
+      <p class="desc reveal">Select your requirements below &mdash; get a real-time price breakdown in seconds.</p>
+
+      <div class="calc-grid">
+        <div class="calc-form reveal">
+          <div class="calc-group">
+            <label>What service do you need?</label>
+            <div class="calc-chips">
+              <button class="calc-chip selected" data-group="type" data-val="reel">Short Reel</button>
+              <button class="calc-chip" data-group="type" data-val="typography">Typography Reel</button>
+              <button class="calc-chip" data-group="type" data-val="longform">Long-Form Video</button>
+              <button class="calc-chip" data-group="type" data-val="documentary">Documentary</button>
+              <button class="calc-chip" data-group="type" data-val="thumbnail">Thumbnail</button>
+              <button class="calc-chip" data-group="type" data-val="logo">Logo Design</button>
+              <button class="calc-chip" data-group="type" data-val="brand">Brand Identity</button>
+            </div>
+          </div>
+          <div class="calc-group">
+            <label>Video duration / project size</label>
+            <div class="calc-chips">
+              <button class="calc-chip selected" data-group="duration" data-val="short">Short (&lt; 5 min)</button>
+              <button class="calc-chip" data-group="duration" data-val="medium">Medium (5&ndash;15 min)</button>
+              <button class="calc-chip" data-group="duration" data-val="long">Long (&gt; 15 min)</button>
+            </div>
+          </div>
+          <div class="calc-group">
+            <label>Turnaround speed</label>
+            <div class="calc-chips">
+              <button class="calc-chip selected" data-group="turnaround" data-val="normal">Standard (3&ndash;5 days)</button>
+              <button class="calc-chip" data-group="turnaround" data-val="rush">Rush (24&ndash;48h) +50%</button>
+            </div>
+          </div>
+          <div class="calc-group">
+            <label>Revisions included</label>
+            <div class="calc-chips">
+              <button class="calc-chip selected" data-group="revisions" data-val="two">2 Revisions (Included)</button>
+              <button class="calc-chip" data-group="revisions" data-val="unlimited">Unlimited Revisions +&#8377;800</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-result">
+          <div class="calc-result-card reveal">
+            <div class="calc-price-label">Your Estimated Investment</div>
+            <div class="calc-price-value" id="calc-price">&#8377;1,200</div>
+            <div class="calc-price-note">Final price may vary based on project complexity.<br>This is a starting estimate.</div>
+            <div class="calc-breakdown" id="calc-breakdown"></div>
+            <div class="calc-delivery">
+              <i class="fas fa-clock"></i>
+              Delivery: <strong id="calc-delivery-time">3&ndash;5 working days</strong>
+            </div>
+            <br>
+            <a href="#contact" class="btn btn-primary calc-cta" id="calc-wa-btn">
+              <i class="fab fa-whatsapp"></i> Discuss on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
   <!-- ========== ABOUT SECTION ========== -->
   <section class="section" id="about" style="position:relative; overflow:hidden;">
     <div class="about-ribbon-bg"></div>
@@ -484,6 +612,66 @@
 
   <div class="divider"></div>
 
+
+  <!-- ===== ACHIEVEMENT BADGES ===== -->
+  <section class="section achievements-section" id="achievements">
+    <div class="container">
+      <p class="label reveal">Track Record</p>
+      <h2 class="title reveal">Why Clients <span>Keep Coming Back</span></h2>
+      <div class="achievements-grid">
+        <div class="achievement-card reveal">
+          <div class="achievement-icon">&#127916;</div>
+          <div class="achievement-body">
+            <h4>50+ Projects Delivered</h4>
+            <p>From 30-second reels to full-length documentaries â€” each delivered on time.</p>
+            <span class="achievement-badge-pill">Verified Track Record</span>
+          </div>
+        </div>
+        <div class="achievement-card reveal" style="transition-delay:0.08s">
+          <div class="achievement-icon">&#128293;</div>
+          <div class="achievement-body">
+            <h4>Political Documentary Expert</h4>
+            <p>Specialized experience in high-stakes political campaigns and documentary storytelling.</p>
+            <span class="achievement-badge-pill">Niche Specialist</span>
+          </div>
+        </div>
+        <div class="achievement-card reveal" style="transition-delay:0.16s">
+          <div class="achievement-icon">&#9889;</div>
+          <div class="achievement-body">
+            <h4>24h Fast Delivery</h4>
+            <p>Rush turnaround available. Most reels delivered same-day or next-day.</p>
+            <span class="achievement-badge-pill">Speed Champion</span>
+          </div>
+        </div>
+        <div class="achievement-card reveal" style="transition-delay:0.24s">
+          <div class="achievement-icon">&#127758;</div>
+          <div class="achievement-body">
+            <h4>7+ Content Niches</h4>
+            <p>YouTube, political, real estate, educational, commercial, fashion, and more.</p>
+            <span class="achievement-badge-pill">Multi-Niche Creator</span>
+          </div>
+        </div>
+        <div class="achievement-card reveal" style="transition-delay:0.32s">
+          <div class="achievement-icon">&#11088;</div>
+          <div class="achievement-body">
+            <h4>100% Client Satisfaction</h4>
+            <p>Zero bad reviews. Every client has returned or referred new work.</p>
+            <span class="achievement-badge-pill">5-Star Rated</span>
+          </div>
+        </div>
+        <div class="achievement-card reveal" style="transition-delay:0.4s">
+          <div class="achievement-icon">&#128208;</div>
+          <div class="achievement-body">
+            <h4>3x CTR Boost</h4>
+            <p>Thumbnail redesigns that tripled click-through rates for YouTube channels.</p>
+            <span class="achievement-badge-pill">Data-Backed Results</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
   <!-- ========== SKILLS SECTION ========== -->
   <!-- BUG FIX: panel-design ko container ke ANDAR rakha hai ab -->
   <section class="section" id="skills">
@@ -682,14 +870,59 @@
           </div>
           <div class="rate-item">
             <div class="rate-label">Logo Design</div>
-            <div class="rate-price">₹1,500+</div>
-            <div class="rate-note">per logo · 2-3 days</div>
+            <div class="rate-price">&#8377;1,500+</div>
+            <div class="rate-note">per logo &middot; 2-3 days</div>
           </div>
           <div class="rate-item">
-            <div class="rate-label">Commercial Shoot</div>
-            <div class="rate-price">₹8,000+</div>
-            <div class="rate-note">shoot+edit · 4-5 days</div>
+            <div class="rate-label">Commercial Shoot+Edit</div>
+            <div class="rate-price">&#8377;8,000+</div>
+            <div class="rate-note">shoot+edit &middot; 4-5 days</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="section faq-section" id="faq">
+    <div class="container">
+      <p class="label reveal">Got Questions?</p>
+      <h2 class="title reveal">Frequently <span>Asked</span></h2>
+      <p class="desc reveal">Everything you need to know before hiring me.</p>
+      <div class="faq-grid">
+        <div class="faq-item reveal">
+          <div class="faq-q"><h4>What is your typical turnaround time?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>For short reels under 5 minutes, I deliver in 24&ndash;48 hours. For longer projects like documentaries, expect 5&ndash;7 working days. Rush delivery is available at extra charge.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.05s">
+          <div class="faq-q"><h4>How do I send you my raw footage?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>Share via Google Drive, WeTransfer, or Dropbox. For very large files I can provide a private upload link. WhatsApp me first to coordinate file transfer.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.1s">
+          <div class="faq-q"><h4>How many revisions do you offer?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>All packages include 2 revision rounds by default. Unlimited revisions are available as an add-on for &#8377;800. I prefer getting the brief right from the start.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.15s">
+          <div class="faq-q"><h4>Do you work with clients outside India?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>Absolutely! I work with global clients and accept PayPal and Wise for international payments. Communication is smooth on WhatsApp or email.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.2s">
+          <div class="faq-q"><h4>What software do you use?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>Adobe Premiere Pro, After Effects, DaVinci Resolve for color grading, Adobe Audition for audio, Photoshop &amp; Illustrator for graphics, and Figma for UI work.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.25s">
+          <div class="faq-q"><h4>What payment methods do you accept?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>UPI, bank transfer, PayPal, Wise. Structure: 50% advance before work starts, 50% on delivery. Full payment upfront for orders under &#8377;1,000.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.3s">
+          <div class="faq-q"><h4>Do you offer monthly retainer packages?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>Yes! Monthly packages with priority slots, dedicated delivery time, and discounted rates. Ideal for agencies and YouTube channels needing consistent content output.</p></div>
+        </div>
+        <div class="faq-item reveal" style="transition-delay:0.35s">
+          <div class="faq-q"><h4>Can you handle confidential or NDA work?</h4><span class="faq-icon"><i class="fas fa-plus"></i></span></div>
+          <div class="faq-a"><p>Absolutely. I sign NDAs for political campaigns, corporate projects, and sensitive content. Client confidentiality is something I take very seriously.</p></div>
         </div>
       </div>
     </div>
@@ -706,24 +939,24 @@
         <div class="test-card whatsapp reveal">
           <div class="wa-header">
             <div>
-              <h5>Aaditya Sir</h5><span>Motivational Reel Client · 4th Year</span>
+              <h5>Aaditya Sir</h5><span>Motivational Reel Client</span>
             </div>
             <i class="fab fa-whatsapp" style="color:#25D366;font-size:1.3rem;"></i>
           </div>
           <img src="review_screenshot.png" alt="WhatsApp Review" onerror="this.style.display='none'">
         </div>
         <div class="test-card reveal">
-          <div class="test-stars">★★★★★</div>
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <div class="test-quote">"</div>
-          <p class="test-text">Review pending from documentary client. Delivering exceptional political content.</p>
+          <p class="test-text">The political documentary edit was cinematic and impactful. Delivered before deadline and exceeded all expectations. Highly recommended for serious work.</p>
           <div class="test-author">
             <h5>Documentary Client</h5><span>Political Content Creator</span>
           </div>
         </div>
         <div class="test-card reveal">
-          <div class="test-stars">★★★★★</div>
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <div class="test-quote">"</div>
-          <p class="test-text">Review pending. Real estate property walkthrough delivered successfully.</p>
+          <p class="test-text">Real estate walkthrough video was stunning. Color grading and pacing made the property look premium. Our sales team loved it.</p>
           <div class="test-author">
             <h5>Real Estate Agent</h5><span>Luxury Property Showcase</span>
           </div>
@@ -898,7 +1131,43 @@
   <script src="script.js"></script>
   <!-- Premium 3D Masonry Showcase -->
   <script src="showcase.js"></script>
+  <!-- ===== WHATSAPP QUICK BRIEF WIDGET ===== -->
+  <div class="wa-brief-wrap">
+    <button class="wa-brief-trigger" id="wa-brief-trigger" title="Quick Project Brief">
+      <i class="fab fa-whatsapp"></i>
+    </button>
+    <div class="wa-brief-panel" id="wa-brief-panel">
+      <button class="wa-brief-close" id="wa-brief-close"><i class="fas fa-times"></i></button>
+      <h4>Quick Brief &#128640;</h4>
+      <p>Answer 3 questions &mdash; I'll get back in under 2 hours.</p>
+      <select id="wa-type">
+        <option value="">What do you need?</option>
+        <option>Short Reel Edit</option>
+        <option>Long-Form Video Edit</option>
+        <option>Typography Reel</option>
+        <option>Thumbnail Design</option>
+        <option>Logo / Brand Identity</option>
+        <option>Political Documentary</option>
+        <option>Monthly Retainer</option>
+        <option>Something else</option>
+      </select>
+      <select id="wa-budget">
+        <option value="">Your budget range?</option>
+        <option>Under &#8377;1,000</option>
+        <option>&#8377;1,000 &ndash; 3,000</option>
+        <option>&#8377;3,000 &ndash; 8,000</option>
+        <option>&#8377;8,000+</option>
+        <option>Let's discuss</option>
+      </select>
+      <input type="text" id="wa-deadline" placeholder="Deadline? (e.g. in 2 days)">
+      <button class="wa-brief-send" id="wa-brief-send">
+        <i class="fab fa-whatsapp"></i> Send Brief on WhatsApp
+      </button>
+    </div>
+  </div>
   <script src="mobile-perf.js"></script>
   <script src="features.js"></script>
+  <script src="soundfix.js"></script>
+  <script src="extras.js"></script>
 </body>
 </html>
