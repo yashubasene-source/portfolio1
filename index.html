@@ -61,15 +61,6 @@
   <link rel="stylesheet" href="features.css">
   <link rel="stylesheet" href="extras.css">
 
-  <!-- Preload hero image (LCP element) so browser fetches it immediately -->
-  <link rel="preload" as="image" href="anshay.webp" fetchpriority="high">
-
-  <!-- Libraries loaded with defer: parse HTML first, download in parallel, execute after DOM ready -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js" defer></script>
-
 </head>
 <body>
 
@@ -1198,13 +1189,31 @@
     </div>
   </div>
 
-  <!-- App scripts: deferred so they never block HTML parsing or first paint -->
-  <script src="script.js" defer></script>
+  <!-- GSAP + ScrollTrigger + Lenis: at body-end so they never block render -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+
+  <!-- App scripts: at body-end, no defer needed -->
+  <script src="script.js"></script>
   <!-- Premium 3D Masonry Showcase -->
-  <script src="showcase.js" defer></script>
-  <script src="mobile-perf.js" defer></script>
-  <script src="features.js" defer></script>
-  <!-- soundfix.js removed: duplicate Web Audio logic already in extras.js -->
-  <script src="extras.js" defer></script>
+  <script src="showcase.js"></script>
+  <script src="mobile-perf.js"></script>
+  <script src="features.js"></script>
+  <!-- soundfix.js removed: duplicate of extras.js audio logic -->
+  <script src="extras.js"></script>
+
+  <!-- Three.js: loaded dynamically AFTER page interactive — zero impact on LCP/FCP -->
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js';
+        s.onload = function() { if (typeof initThreeJS === 'function') initThreeJS(); };
+        document.head.appendChild(s);
+      }, 2000); // 2s after load — user is already interacting
+    });
+  </script>
 </body>
 </html>

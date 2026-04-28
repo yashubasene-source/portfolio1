@@ -1,64 +1,51 @@
 /**
- * compress-images.js
+ * compress-images.js — Round 2: Graphics folder JPGs
  * Run: node compress-images.js
- * Requires: npm install sharp
- *
- * Converts PNG images to WebP for massive size reduction.
- * anshay.png (2.07MB) -> anshay.webp (~80-120KB)
- * N1..png (1.71MB)   -> N1.webp (~60-100KB)
- * Skill icons        -> webp (<8KB each)
  */
 
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
-const dir = __dirname;
+const graphicsDir = path.join(__dirname, 'projects', 'graphics');
 
 const conversions = [
-  // Hero image - most critical LCP fix
-  { input: 'anshay.png',          output: 'anshay.webp',         quality: 85, width: null },
-  // About image - second largest file
-  { input: 'N1..png',             output: 'N1.webp',             quality: 82, width: null },
-  // Skill icons
-  { input: 'premiere-pro.png',    output: 'premiere-pro.webp',   quality: 80, width: 64  },
-  { input: 'after-effects.png',   output: 'after-effects.webp',  quality: 80, width: 64  },
-  { input: 'davinci-resolve.png', output: 'davinci-resolve.webp',quality: 80, width: 64  },
-  { input: 'adobe-audition.png',  output: 'adobe-audition.webp', quality: 80, width: 64  },
-  { input: 'photoshop.png',       output: 'photoshop.webp',      quality: 80, width: 64  },
-  { input: 'illustrator.png',     output: 'illustrator.webp',    quality: 80, width: 64  },
+  // HERO + ABOUT (already done, skip if webp exists)
+  { input: path.join(__dirname, 'anshay.png'),          output: path.join(__dirname, 'anshay.webp'),          quality: 85, width: null },
+  { input: path.join(__dirname, 'N1..png'),             output: path.join(__dirname, 'N1.webp'),             quality: 82, width: null },
+
+  // GRAPHICS FOLDER — The BIG ones (12.5MB total → target <600KB)
+  { input: path.join(graphicsDir, 'Artboard 1.jpg'),          output: path.join(graphicsDir, 'Artboard-1.webp'),          quality: 82, width: 1400 },
+  { input: path.join(graphicsDir, 'Sistec-01.jpg'),           output: path.join(graphicsDir, 'Sistec-01.webp'),           quality: 82, width: 1400 },
+  { input: path.join(graphicsDir, 'Sistec-02.jpg'),           output: path.join(graphicsDir, 'Sistec-02.webp'),           quality: 82, width: 1400 },
+  { input: path.join(graphicsDir, 'Day-1.jpg'),               output: path.join(graphicsDir, 'Day-1.webp'),               quality: 80, width: 1200 },
+  { input: path.join(graphicsDir, 'Untitled-1.jpg'),          output: path.join(graphicsDir, 'Untitled-1.webp'),          quality: 80, width: 1200 },
+  { input: path.join(graphicsDir, 'youphoria-psoter-1.jpg'),  output: path.join(graphicsDir, 'youphoria-psoter-1.webp'),  quality: 80, width: 1200 },
+  { input: path.join(graphicsDir, 'P-1.jpg'),                 output: path.join(graphicsDir, 'P-1.webp'),                 quality: 80, width: 1200 },
 ];
 
 async function convert() {
   let totalSavedKB = 0;
 
   for (const { input, output, quality, width } of conversions) {
-    const inPath = path.join(dir, input);
-    const outPath = path.join(dir, output);
-
-    if (!fs.existsSync(inPath)) {
-      console.log(`⚠️  Skipped (not found): ${input}`);
-      continue;
-    }
+    if (!fs.existsSync(input)) { console.log(`⚠️  Skip (not found): ${path.basename(input)}`); continue; }
+    if (fs.existsSync(output)) { console.log(`✓  Already exists: ${path.basename(output)}`); continue; }
 
     try {
-      let pipeline = sharp(inPath);
-      if (width) pipeline = pipeline.resize(width, width, { fit: 'inside', withoutEnlargement: true });
-      await pipeline.webp({ quality }).toFile(outPath);
+      let pipeline = sharp(input);
+      if (width) pipeline = pipeline.resize(width, null, { fit: 'inside', withoutEnlargement: true });
+      await pipeline.webp({ quality }).toFile(output);
 
-      const inSizeKB  = Math.round(fs.statSync(inPath).size  / 1024);
-      const outSizeKB = Math.round(fs.statSync(outPath).size / 1024);
-      const saved     = inSizeKB - outSizeKB;
-      totalSavedKB   += saved;
-
-      console.log(`✅ ${input.padEnd(25)} ${inSizeKB}KB  →  ${outSizeKB}KB  (-${saved}KB)`);
+      const inKB  = Math.round(fs.statSync(input).size  / 1024);
+      const outKB = Math.round(fs.statSync(output).size / 1024);
+      totalSavedKB += inKB - outKB;
+      console.log(`✅ ${path.basename(input).padEnd(30)} ${inKB}KB → ${outKB}KB  (-${inKB - outKB}KB)`);
     } catch (err) {
-      console.error(`❌ Failed: ${input} — ${err.message}`);
+      console.error(`❌ ${path.basename(input)}: ${err.message}`);
     }
   }
 
-  console.log(`\n💾 Total saved: ~${Math.round(totalSavedKB / 1024 * 10) / 10}MB`);
-  console.log('\n📝 Next: Update img src references in index.html to use .webp files');
+  console.log(`\n💾 Total saved: ~${(totalSavedKB / 1024).toFixed(1)}MB`);
 }
 
 convert();

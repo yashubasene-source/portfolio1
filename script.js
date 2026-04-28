@@ -1,4 +1,4 @@
-/* =========================================
+﻿/* =========================================
    SCRIPT.JS - Anshay Basene Portfolio
    Cleaned interactive functionality
    ========================================= */
@@ -530,7 +530,7 @@ function renderPortfolioGrids() {
 }
 
 const lenis = new Lenis({
-  // Smooth scrolling settings — mobile pe syncTouch true rakhna zaroori hai
+  // Smooth scrolling settings â€” mobile pe syncTouch true rakhna zaroori hai
   duration: window.innerWidth <= 768 ? 0.8 : 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
@@ -538,7 +538,7 @@ const lenis = new Lenis({
   touchMultiplier: 1.5
 });
 
-/* RAF loop removed — GSAP ticker already calls lenis.raf() below, running it twice caused double updates */
+/* RAF loop removed â€” GSAP ticker already calls lenis.raf() below, running it twice caused double updates */
 
 gsap.registerPlugin(ScrollTrigger);
 lenis.on('scroll', ScrollTrigger.update);
@@ -584,21 +584,19 @@ gsap.to('.hero-left', {
   }
 });
 
-(function initThreeJS() {
-  // Hero section ka 3D background yahan banta hai.
-  // Mobile pe skip karte hain - Three.js bahut heavy hai low-end devices ke liye.
+/* initThreeJS â€” called dynamically from index.html 2s after page load.
+   Three.js NOT in initial bundle = zero LCP/FCP impact. */
+function initThreeJS() {
   if (window.innerWidth <= 768) return;
+  if (typeof THREE === 'undefined') return;
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
 
-  // Wrap in requestIdleCallback so Three.js never competes with first paint
-  const initFn = () => {
-
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
   const geom = new THREE.IcosahedronGeometry(1.8, 1);
   const mat = new THREE.MeshPhongMaterial({ color: 0xa855f7, wireframe: true, transparent: true, opacity: 0.12 });
@@ -612,10 +610,9 @@ gsap.to('.hero-left', {
   mesh2.position.set(-3.5, 1, -2);
   scene.add(mesh2);
 
-  const count = 500; /* Reduced from 1000 — saves memory and GPU fill rate */
+  const count = 500;
   const positions = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i += 1) positions[i] = (Math.random() - 0.5) * 12;
-
+  for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 12;
   const pGeom = new THREE.BufferGeometry();
   pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const pMat = new THREE.PointsMaterial({ size: 0.012, color: 0xa855f7, transparent: true, opacity: 0.3 });
@@ -628,14 +625,11 @@ gsap.to('.hero-left', {
   scene.add(pointLight);
 
   camera.position.z = 6;
-
-  let mouseX = 0;
-  let mouseY = 0;
-  document.addEventListener('mousemove', (event) => {
-    // Mouse position save kar rahe hain taki 3D shapes cursor ke hisab se react karein.
-    mouseX = event.clientX / window.innerWidth - 0.5;
-    mouseY = event.clientY / window.innerHeight - 0.5;
-  });
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX / window.innerWidth - 0.5;
+    mouseY = e.clientY / window.innerHeight - 0.5;
+  }, { passive: true });
 
   function animate() {
     requestAnimationFrame(animate);
@@ -656,15 +650,8 @@ gsap.to('.hero-left', {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
-  }; // end initFn
+}
 
-  // Use requestIdleCallback when available, fallback to setTimeout
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(initFn, { timeout: 3000 });
-  } else {
-    setTimeout(initFn, 500);
-  }
-})();
 
 function initInfiniteGraphicsTrack() {
   // Graphics row ko duplicate karke infinite scrolling effect diya gaya hai.
@@ -804,7 +791,7 @@ ScrollTrigger.create({
   }
 });
 
-/* attachPortfolioTilt removed — was a no-op stub that always returned immediately */
+/* attachPortfolioTilt removed â€” was a no-op stub that always returned immediately */
 
 function toggleMenu() {
   // Mobile menu open/close
