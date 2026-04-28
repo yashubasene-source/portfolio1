@@ -1,4 +1,7 @@
 {
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "installCommand": "echo 'no install needed'",
   "headers": [
     {
       "source": "/(.*)\\.(?:webp|png|jpg|jpeg|svg|ico|woff2|woff)",
