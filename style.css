@@ -1,5 +1,5 @@
 /* ===== IMPORT FONTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap');
+/* Fonts loaded via <link> in HTML — @import removed to prevent double loading */
 
 /* Quick Guide:
    :root         -> site ke global colors
@@ -243,7 +243,7 @@ ul {
   height:100%; 
   background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); 
   transform:skewX(-20deg); 
-  animation:shine 3s infinite; 
+  animation:shine 5s infinite; /* 3s->5s: less frequent shimmer repaint */
 }
 
 @keyframes shine { 
@@ -380,31 +380,7 @@ ul {
    PERFORMANCE: Filters can be expensive; consider removing on mobile if sluggish
 */
 /* ===== NOISE TEXTURE ===== */
-body::before { 
-  content:''; 
-  position:fixed; 
-  inset:-50%; 
-  width:200%; 
-  height:200%; 
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); 
-  pointer-events:none; 
-  z-index:0; 
-  opacity:0.6; 
-  animation:grain 8s steps(10) infinite; 
-}
-
-@keyframes grain { 
-  0%, 100% { transform:translate(0,0) } 
-  10% { transform:translate(-2%,-4%) } 
-  20% { transform:translate(-6%,2%) } 
-  30% { transform:translate(3%,-10%) } 
-  40% { transform:translate(-2%,10%) } 
-  50% { transform:translate(-6%,4%) } 
-  60% { transform:translate(6%,0%) } 
-  70% { transform:translate(0%,6%) } 
-  80% { transform:translate(1%,14%) } 
-  90% { transform:translate(-4%,4%) } 
-}
+/* REMOVED: grain animation caused constant full-page repaints at 200% SVG scale — biggest perf killer */ 
 
 /* ========== PARALLAX BACKGROUND ICONS ========== 
    Fixed background wrapper containing decorative parallax icons
@@ -431,8 +407,9 @@ body::before {
 .parallax-icon { 
   position:absolute; 
   font-size:2.5rem; 
-  color:var(--text); 
-  filter:blur(1px); 
+  color:var(--text);
+  /* filter:blur removed — created expensive compositor layers per icon */
+  will-change:transform;
 }
 
 /* ========== SCROLL TIMECODE DISPLAY ========== 
@@ -607,14 +584,213 @@ body:hover .cursor-outline {
   top:0; 
   left:0; 
   right:0; 
+   - data-speed attribute: Used by JavaScript for parallax calculation
+   - Positive speed: Moves same direction as mouse (closer)
+   - Negative speed: Moves opposite direction (farther away pseudodepth)
+   - blur(1px): Slightly blurred for atmospheric effect
+*/
+/* ===== GLOBAL PARALLAX BACKGROUND ===== */
+.parallax-bg-wrapper { 
+  position:fixed; 
+  inset:0; 
+  pointer-events:none; 
+  z-index:0; 
+  overflow:hidden; 
+  opacity:0.1; 
+  transform:translateZ(0);
+}
+
+.parallax-icon { 
+  position:absolute; 
+  font-size:2.5rem; 
+  color:var(--text);
+  /* filter:blur removed — created expensive compositor layers per icon */
+  will-change:transform;
+}
+
+/* ========== SCROLL TIMECODE DISPLAY ========== 
+   Fixed bottom-left corner showing scroll progress as timecode
+   Recreates video editing interface during page scroll experience
+   
+   STRUCTURE: "REC" badge + timecode (HH:MM:SS:FF format)
+   - REC badge: Pulsing red with white text (video recording reference)
+   - Timecode elements: Hours, minutes, seconds, frames (each in separate span)
+   - Updates via JavaScript scroll listener
+   
+   RESPONSIVE: Hidden on mobile (max-width 768px)
+   ANIMATION: REC badge pulses same as background REC indicator
+*/
+/* ===== SCROLL TIMECODE ===== */
+.scroll-timecode { 
+  position:fixed; 
+  bottom:24px; 
+  left:24px; 
+  z-index:990; 
+  font-family:'Outfit',sans-serif; 
+  color:var(--accent); 
+  font-size:1rem; 
+  font-weight:700; 
+  display:flex; 
+  gap:4px; 
+  align-items:center; 
+  filter:drop-shadow(0 0 8px var(--accent-glow)); 
+  opacity:0.6; 
+  pointer-events:none; 
+}
+
+.scroll-timecode::before { 
+  content:'REC'; 
+  background:#ff3333; 
+  color:#fff; 
+  font-size:0.5rem; 
+  padding:3px 6px; 
+  border-radius:3px; 
+  margin-right:8px; 
+  animation:pulse-red 2s infinite; 
+  letter-spacing:1px; 
+}
+
+@media (max-width:768px) { 
+  .scroll-timecode { display:none; } 
+}
+
+/* ========== CUSTOM CURSOR STYLES ========== 
+   Replaces default browser cursor with custom design
+   Uses two-dot cursor system: inner dot (small) + outer outline (larger)
+   
+   IMPLEMENTATION:
+   - Media query checks for fine pointer (excludes touch devices)
+   - body cursor hidden (cursor: none)
+   - Dot: 6px circle (white), follows mouse precisely
+   - Outline: 40px circle with 1px border, smoother follow (0.15s ease)
+   - Outline scales/changes color on interactive elements (hover states)
+   
+   INTERACTIVE STATES:
+   1. .hover-link: When hovering links/buttons
+      - Grows to 52px
+      - Changes border to accent color
+      - Subtle background glow
+      
+   2. .hover-video: When hovering portfolio/reel cards
+      - Grows larger (70px)
+      - Background becomes accent color
+      - Adds glow effect and "PLAY" text
+      - Drop shadow enhances 3D effect
+   
+   PERFORMANCE: Only active on desktop with fine pointer (hover-capable)
+   RESPONSIVE: Disabled on mobile (no fine pointer) and tablets
+*/
+/* ===== CUSTOM CURSOR ===== */
+@media (pointer: fine) {
+  body { cursor: none; }
+  a, button, .filter-btn, .skill-tab, .port-card, .reel-card { cursor: none !important; }
+}
+
+.cursor-dot { 
+  position:fixed; 
+  top:0; 
+  left:0; 
+  width:6px; 
+  height:6px; 
+  background:#fff; 
+  border-radius:50%; 
+  pointer-events:none; 
+  z-index:9999; 
+  transform:translate(-50%,-50%); 
+  opacity:0; 
+  transition:opacity 0.2s; 
+  will-change:transform;
+}
+
+.cursor-outline { 
+  position:fixed; 
+  top:0; 
+  left:0; 
+  width:40px; 
+  height:40px; 
+  border:1px solid rgba(255,255,255,0.4); 
+  border-radius:50%; 
+  pointer-events:none; 
+  z-index:9998; 
+  transform:translate(-50%,-50%); 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  opacity:0; 
+  transition:width 0.2s, height 0.2s, background 0.2s, border-color 0.2s, opacity 0.2s; 
+  will-change:transform;
+}
+
+body:hover .cursor-dot, 
+body:hover .cursor-outline { 
+  opacity:1; 
+}
+
+.cursor-text { 
+  font-family:'Outfit',sans-serif; 
+  font-size:0.5rem; 
+  font-weight:800; 
+  opacity:0; 
+  color:#000; 
+  letter-spacing:1px; 
+  transition:opacity 0.2s; 
+}
+
+/* Cursor state when hovering video/portfolio cards */
+.cursor-outline.hover-video { 
+  width:70px; 
+  height:70px; 
+  background:#c084fc; 
+  border-color:#c084fc; 
+  box-shadow:0 0 20px rgba(168,85,247,0.5); 
+}
+
+.cursor-outline.hover-video .cursor-text { 
+  opacity:1; 
+}
+
+/* Cursor state when hovering links/buttons */
+.cursor-outline.hover-link { 
+  width:52px; 
+  height:52px; 
+  border-color:var(--accent); 
+  background:rgba(168,85,247,0.1); 
+}
+
+/* ========== NAVBAR STYLES ========== 
+   STRUCTURE: Fixed header with solid nav-inner container
+   LAYOUT: 3-section flex (logo | nav-links | hamburger)
+   
+   STATES:
+   1. Default: Transparent background
+   2. Scrolled (.scrolled class): Semi-transparent with backdrop blur + bottom border
+   
+   LOGO: "ANSHAY." text with colored dot accent
+   NAV-LINKS: Flex row with 32px gap
+   - Links: Muted gray, hover to white
+   - CTA button: Accent-colored pill with glow on hover
+   
+   HAMBURGER: Three-line menu (hidden on desktop, shown on mobile)
+   - Flex column with 5px gaps
+   - Animated spans (set up for animation in JavaScript)
+   
+   RESPONSIVE: nav-links hidden on tablet/mobile, hamburger shown instead
+*/
+/* ===== NAVBAR ===== */
+.nav { 
+  position:fixed; 
+  top:0; 
+  left:0; 
+  right:0; 
   z-index:1000; 
   padding:0 24px; 
   transition:background 0.3s, box-shadow 0.3s; 
 }
 
 .nav.scrolled { 
-  background:rgba(8,8,8,0.94); 
-  backdrop-filter:blur(20px); 
+  background:rgba(8,8,8,0.96); 
+  backdrop-filter:blur(10px); 
+  -webkit-backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border); 
 }
 
@@ -706,8 +882,9 @@ body:hover .cursor-outline {
   top:68px; 
   left:0; 
   right:0; 
-  background:rgba(8,8,8,0.98); 
-  backdrop-filter:blur(20px); 
+  background:rgba(8,8,8,0.99); 
+  backdrop-filter:blur(8px); 
+  -webkit-backdrop-filter:blur(8px);
   border-bottom:1px solid var(--border); 
   z-index:999; 
   flex-direction:column; 
@@ -818,7 +995,8 @@ body:hover .cursor-outline {
 .skills-panel { display:none; }
 .skills-panel.active { display:block; }
 .skills-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.skill-card { background:rgba(20,20,25,0.4); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:28px; backdrop-filter:blur(8px); transition:all 0.3s; }
+.skill-card { background:rgba(20,20,25,0.7); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:28px; transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+/* backdrop-filter removed from skill-card — solid bg covers, saves compositor layers */
 .skill-card:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-4px); box-shadow:0 15px 40px rgba(168,85,247,0.15); }
 .skill-card h4 { font-size:1.05rem; font-weight:700; margin-bottom:8px; color:var(--text); letter-spacing:0.5px; }
 .skill-card p { font-size:0.85rem; color:var(--muted); line-height:1.6; }
@@ -842,6 +1020,7 @@ body:hover .cursor-outline {
   cursor:pointer;
   transition:transform 0.35s ease, opacity 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   opacity:1;
+  will-change:transform;
 }
 .port-card:hover {
   transform:translateY(-6px) scale(1.01);
@@ -1012,179 +1191,6 @@ body:hover .cursor-outline {
 @media (min-width:1360px) {
   .portfolio-masonry { column-count:4; }
 }
-
-/* ===== PORTFOLIO SHOWCASE STRIPS ===== */
-.portfolio-showcase { display:grid; gap: 8px }
-.portfolio-showcase-block { position:relative; }
-.showcase-strip,
-.reels-section { overflow:hidden; padding:16px 0 40px; }
-.showcase-track-wrapper,
-.reels-track-wrapper {
-  position: relative;
-  overflow: hidden;
-  cursor: grab;
-}
-
-/* left fade */
-.showcase-track-wrapper::before,
-.reels-track-wrapper::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 160px;
-  pointer-events: none;
-  z-index: 2;
-  background: linear-gradient(
-    to right,
-    rgba(11,11,11,0.88) 0%,
-    rgba(11,11,11,0.78) 45%,
-    rgba(11,11,11,0.00) 100%
-  );
-}
-
-/* right fade */
-.showcase-track-wrapper::after,
-.reels-track-wrapper::after {
-  content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 160px;
-  pointer-events: none;
-  z-index: 2;
-  background: linear-gradient(
-    to left,
-    rgba(11,11,11,0.88) 0%,
-    rgba(11,11,11,0.78) 45%,
-    rgba(11,11,11,0.00) 100%
-  );
-}
-.showcase-track,
-.reels-track,
-.graphics-track { display:flex; gap:16px; width:max-content; }
-.showcase-track:hover,
-.reels-track:hover,
-.graphics-track:hover { animation-play-state:paused; }
-.showcase-track--rtl,
-.reels-track-rtl { animation:scrollReelsRTL 100s linear infinite; }
-.graphics-track.animating { animation:scrollGraphics 100s linear infinite; }
-@keyframes scrollGraphics {
-  0% { transform:translateX(-50%); }
-  100% { transform:translateX(0); }
-}
-@keyframes scrollReelsRTL {
-  0% { transform:translateX(0); }
-  100% { transform:translateX(calc(-1 * (var(--reels-loop-width, 100%)))); }
-}
-.reel-card {
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  overflow:hidden;
-  width:160px;
-  min-width:160px;
-  flex-shrink:0;
-  transition:border-color 0.25s, transform 0.3s, box-shadow 0.3s;
-  cursor:pointer;
-}
-.reel-card:hover {
-  border-color:var(--border-a);
-  transform:scale(1.04) translateY(-4px);
-  box-shadow:0 10px 30px rgba(168,85,247,0.1);
-}
-.reel-card.is-playing {
-  border-color:var(--accent);
-  transform:scale(1.04) translateY(-4px);
-  box-shadow:0 14px 34px rgba(168,85,247,0.2);
-}
-.reel-card--reel {
-  width:220px;
-  min-width:220px;
-  background:#0b0b0f;
-  box-shadow:0 8px 24px rgba(0,0,0,0.35);
-}
-.reel-card--graphic {
-  width:220px;
-  min-width:220px;
-}
-.reel-video {
-  aspect-ratio:9/16;
-  background:#0d0d0d;
-  overflow:hidden;
-  position:relative;
-}
-.reel-video video,
-.reel-image {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-.reel-video video { pointer-events:none; }
-.reel-play-icon {
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.4);
-  color:#fff;
-  font-size:2rem;
-  opacity:0;
-  transition:opacity 0.3s, transform 0.3s;
-  backdrop-filter:blur(2px);
-}
-.reel-card--reel:not(.is-playing) .reel-play-icon {
-  opacity:0.92;
-  background:linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.18));
-}
-.reel-card:hover .reel-play-icon { opacity:1; }
-.reel-card.is-playing .reel-play-icon { opacity:0; pointer-events:none; }
-.reel-play-icon i {
-  filter:drop-shadow(0 0 10px rgba(168,85,247,0.8));
-  transition:transform 0.3s;
-}
-.reel-card--reel:not(.is-playing) .reel-play-icon i {
-  animation:reel-bounce 1.8s ease-in-out infinite;
-}
-.reel-card:hover .reel-play-icon i { transform:scale(1.15); }
-.reel-info { padding:12px; }
-.reel-info h5 { font-size:0.8rem; font-weight:700; margin-bottom:3px; }
-.reel-info p { font-size:0.68rem; color:var(--muted2); }
-.reel-card--missing .reel-video {
-  background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-}
-
-@keyframes reel-bounce {
-  0%, 100% { transform:translateY(0) scale(1); }
-  30% { transform:translateY(-8px) scale(1.08); }
-  55% { transform:translateY(0) scale(0.98); }
-  75% { transform:translateY(-4px) scale(1.03); }
-}
-
-/* ===== SECTION-SUB ===== */
-.section-sub { font-family:'Outfit',sans-serif; font-size:0.6rem; color:var(--muted2); letter-spacing:3px; text-transform:uppercase; margin:48px 0 20px; display:flex; align-items:center; gap:12px; }
-.section-sub::after { content:''; flex:1; height:1px; background:var(--border); }
-
-/* ===== PRICING ===== */
-#pricing { position:relative; }
-.pricing-timeline-bg { position:absolute; top:50%; left:0; width:100%; height:200px; transform:translateY(-50%); pointer-events:none; z-index:0; opacity:0.06; overflow:hidden; }
-.pt-track { width:100%; height:40px; background:linear-gradient(90deg, transparent 5%, var(--accent) 5%, var(--accent) 95%, transparent 95%); border-radius:4px; margin-bottom:10px; position:relative; }
-.pt-track::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(0,0,0,0.5) 100px, rgba(0,0,0,0.5) 102px); }
-.pt-track-2 { opacity:0.5; width:80%; margin:0 auto; }
-.pt-cursor { position:absolute; top:0; height:100%; width:2px; background:#ff3333; z-index:2; animation:pan-cursor 4s infinite linear alternate; }
-.pt-cursor::after { content:''; position:absolute; top:0; left:-6px; width:14px; height:10px; background:#ff3333; border-radius:2px; }
-@keyframes pan-cursor { 0%{left:10%;} 100%{left:90%;} }
-
-.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:48px; position:relative; z-index:2; }
-.price-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:36px 28px; position:relative; transition:transform 0.25s, box-shadow 0.25s; display:flex; flex-direction:column; height:100%; }
-.price-card:hover { transform:translateY(-4px); box-shadow:0 0 40px rgba(168,85,247,0.08); }
-.price-card.featured { border-color:var(--accent); background:linear-gradient(135deg, rgba(8,8,8,1), var(--card2)); box-shadow:0 0 30px rgba(168,85,247,0.15); animation:pulse-glow 3s infinite alternate; }
-@keyframes pulse-glow { 0%{box-shadow:0 0 15px rgba(168,85,247,0.10);} 100%{box-shadow:0 0 45px rgba(168,85,247,0.40);} }
-.price-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:0.62rem; padding:4px 14px; border-radius:100px; font-weight:800; white-space:nowrap; font-family:'Outfit',sans-serif; letter-spacing:1px; box-shadow:0 0 16px var(--accent-glow); }
-.price-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:12px; }
-.price-amount { font-family:'Outfit',sans-serif; font-size:1.7rem; font-weight:700; color:var(--accent); margin-bottom:6px; }
-.price-amount small { font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; }
-.price-divider { height:1px; background:var(--border); margin:20px 0; }
 .price-features { margin-bottom:24px; flex-grow:1; }
 .price-features li { display:flex; align-items:flex-start; gap:10px; font-size:0.83rem; color:var(--muted2); margin-bottom:10px; }
 .price-features li i { color:var(--accent); font-size:0.75rem; margin-top:3px; flex-shrink:0; filter:drop-shadow(0 0 4px var(--accent-glow)); }

@@ -15,11 +15,11 @@
   const slateTop = pl.querySelector('.pl-slate-top');
   const slateBot = pl.querySelector('.pl-slate-bottom');
 
-  const circumference = 408; // 2 * pi * 65 ≈ 408
+  const circumference = 408;
   let current = 3;
   let frameCount = 0;
-  const totalFrames = 90; // 3 seconds at 30fps ticks
-  const framesPerNum = 30;
+  const totalFrames = 45; /* Reduced 90→1.5s: was blocking FCP for 3 full seconds */
+  const framesPerNum = 15;
 
   function updateRing(progress) {
     if (!ring) return;
@@ -337,13 +337,4 @@
   bars.forEach(bar => obs.observe(bar));
 })();
 
-/* ============================================================
-   8. OG IMAGE — meta tag update (runtime fallback)
-   ============================================================ */
-(function setOGMeta() {
-  // Ensure OG tags are correct at runtime (backup for SSR-less env)
-  const ogImg = document.querySelector('meta[property="og:image"]');
-  if (ogImg && !ogImg.content.startsWith('http')) {
-    ogImg.content = window.location.origin + '/' + ogImg.content;
-  }
-})();
+/* setOGMeta removed — OG meta tags should be correct in static HTML, no runtime patch needed */

@@ -3,3 +3,5 @@
 
 # Uncomment below ONLY if you want to ignore mp4 entirely (not recommended):
 # *.mp4
+
+node_modules/

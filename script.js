@@ -538,12 +538,7 @@ const lenis = new Lenis({
   touchMultiplier: 1.5
 });
 
-function raf(time) {
-  // Har frame me Lenis ko update karte rehna padta hai.
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
+/* RAF loop removed — GSAP ticker already calls lenis.raf() below, running it twice caused double updates */
 
 gsap.registerPlugin(ScrollTrigger);
 lenis.on('scroll', ScrollTrigger.update);
@@ -592,9 +587,12 @@ gsap.to('.hero-left', {
 (function initThreeJS() {
   // Hero section ka 3D background yahan banta hai.
   // Mobile pe skip karte hain - Three.js bahut heavy hai low-end devices ke liye.
-  if (window.innerWidth <= 768) return; // Skip on mobile/small screens
+  if (window.innerWidth <= 768) return;
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
+
+  // Wrap in requestIdleCallback so Three.js never competes with first paint
+  const initFn = () => {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -614,7 +612,7 @@ gsap.to('.hero-left', {
   mesh2.position.set(-3.5, 1, -2);
   scene.add(mesh2);
 
-  const count = window.innerWidth < 768 ? 300 : 1000;
+  const count = 500; /* Reduced from 1000 — saves memory and GPU fill rate */
   const positions = new Float32Array(count * 3);
   for (let i = 0; i < count * 3; i += 1) positions[i] = (Math.random() - 0.5) * 12;
 
@@ -658,6 +656,14 @@ gsap.to('.hero-left', {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+  }; // end initFn
+
+  // Use requestIdleCallback when available, fallback to setTimeout
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(initFn, { timeout: 3000 });
+  } else {
+    setTimeout(initFn, 500);
+  }
 })();
 
 function initInfiniteGraphicsTrack() {
@@ -798,10 +804,7 @@ ScrollTrigger.create({
   }
 });
 
-function attachPortfolioTilt() {
-  // Masonry cards ke liye extra tilt avoid karte hain taki readability aur hover smooth rahe.
-  return;
-}
+/* attachPortfolioTilt removed — was a no-op stub that always returned immediately */
 
 function toggleMenu() {
   // Mobile menu open/close
@@ -963,7 +966,7 @@ if (cursorDot && cursorOutline) {
     cursorDot.style.left = `${event.clientX}px`;
     cursorDot.style.top = `${event.clientY}px`;
     gsap.to(cursorOutline, { x: event.clientX, y: event.clientY, duration: 0.15, ease: 'power2.out' });
-  });
+  }, { passive: true });
 
   window.addEventListener('touchmove', (event) => {
     if (event.touches.length > 0) {
@@ -972,7 +975,7 @@ if (cursorDot && cursorOutline) {
       cursorDot.style.top = `${touch.clientY}px`;
       gsap.to(cursorOutline, { x: touch.clientX, y: touch.clientY, duration: 0.15, ease: 'power2.out' });
     }
-  });
+  }, { passive: true });
 }
 
 window.addEventListener('scroll', () => {
@@ -1007,7 +1010,7 @@ window.addEventListener('scroll', () => {
     if (progress > 0.05) progressBtn.classList.add('visible');
     else progressBtn.classList.remove('visible');
   }
-});
+}, { passive: true }); /* passive:true prevents browser scroll blocking */
 
 const parallaxIcons = document.querySelectorAll('.parallax-icon');
 const isHighEnd = window.innerWidth > 1024 && window.matchMedia('(pointer: fine)').matches;
@@ -1032,8 +1035,6 @@ if (parallaxIcons.length > 0 && isHighEnd) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Page fully load hote hi ye startup sequence chalta hai.
-  // Isi jagah se dynamic content, track cloning aur hover effects start hote hain.
   renderPortfolioGrids();
   const activeFilterBtn = document.querySelector('.filter-btn.active');
   if (activeFilterBtn) filterWork('all', activeFilterBtn);
@@ -1041,6 +1042,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initReelsRTL();
   initReelCardInteractions();
   initGraphicCardInteractions();
-  attachPortfolioTilt();
   attachHoverEvents();
 });

@@ -41,28 +41,34 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
   <meta property="og:description" content="Cinematic videos, bold graphics, and motion that drives real results. Available for hire.">
-  <meta property="og:image" content="anshay.png">
+  <meta property="og:image" content="anshay.webp">
   <meta property="og:url" content="https://anshay.vercel.app">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
-  <meta name="twitter:image" content="anshay.png">
+  <meta name="twitter:image" content="anshay.webp">
   <!-- ========== EXTERNAL FONTS & ICONS ========== -->
+  <!-- Preconnect to font origins for faster DNS + TLS handshake -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- ========== STYLESHEETS & ANIMATIONS LIBRARIES ========== -->
+  <!-- ========== STYLESHEETS ========== -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="showcase.css">
   <link rel="stylesheet" href="features.css">
   <link rel="stylesheet" href="extras.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <!-- Preload hero image (LCP element) so browser fetches it immediately -->
+  <link rel="preload" as="image" href="anshay.webp" fetchpriority="high">
+
+  <!-- Libraries loaded with defer: parse HTML first, download in parallel, execute after DOM ready -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js" defer></script>
 
 </head>
 <body>
@@ -223,7 +229,7 @@
 
         <div class="hero-right reveal">
           <div class="hero-img-wrap">
-            <img src="anshay.png" alt="Anshay Basene — Video Editor" onerror="this.style.display='none'">
+            <img src="anshay.webp" alt="Anshay Basene — Video Editor" width="480" height="600" loading="eager" fetchpriority="high" onerror="this.src='anshay.png'">
             <div class="hero-tools-pill">
               <span style="color:#9999FF"><i class="fas fa-film"></i> Pr</span>
               <span style="color:#00B0FF"><i class="fas fa-magic"></i> Ae</span>
@@ -561,7 +567,7 @@
       <div class="about-grid">
         <div class="about-img-wrap reveal">
           <div class="about-img">
-            <img src="N1..png" alt="Anshay Basene" onerror="this.style.display='none'">
+            <img src="N1.webp" alt="Anshay Basene" width="480" height="600" loading="lazy" onerror="this.src='N1..png'">
           </div>
         </div>
 
@@ -689,21 +695,21 @@
         <div class="design-grid-bg"></div>
         <div class="skills-grid" style="position:relative; z-index:2;">
           <div class="skill-card reveal">
-            <img src="premiere-pro.png"
-              alt="Premiere Pro" width="38" height="38"
+            <img src="premiere-pro.webp"
+              alt="Premiere Pro" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe Premiere Pro</h4>
             <p>Cuts, transitions, color correction, audio sync.</p>
           </div>
           <div class="skill-card reveal">
-            <img src="after-effects.png"
-              alt="After Effects" width="38" height="38"
+            <img src="after-effects.webp"
+              alt="After Effects" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe After Effects</h4>
             <p>Motion graphics, VFX, kinetic typography.</p>
           </div>
           <div class="skill-card reveal">
-            <img src="davinci-resolve.png" alt="DaVinci Resolve" width="38" height="38"
+            <img src="davinci-resolve.webp" alt="DaVinci Resolve" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Cinematic Color Grading</h4>
             <p>Custom LUTs, skin tone correction, mood grading.</p>
@@ -714,11 +720,9 @@
             <p>On-location shoots, cinematic framing, lighting.</p>
           </div>
           <div class="skill-card reveal">
-            <img
-              src="adobe-audition.png"
-              alt="Adobe Audition" width="38" height="38"
-              style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);"
-              onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMjggMTI4Jz48cmVjdCB3aWR0aD0nMTI4JyBoZWlnaHQ9JzEyOCcgcng9JzIwJyBmaWxsPSdibGFjaycvPjxyZWN0IHg9JzYnIHk9JzYnIHdpZHRoPScxMTYnIGhlaWdodD0nMTE2JyByeD0nMTQnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzBwZTRiNScgc3Ryb2tlLXdpZHRoPSc2Jy8+PHRleHQgeD0nNjQnIHk9JzkwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtd2VpZ2h0PSc5MDAnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyMwMGU0YjUnIHRleHQtYW5jaG9yPSdtaWRkbGUnPkF1PC90ZXh0Pjwvc3ZnPg=='">
+              src="adobe-audition.webp"
+              alt="Adobe Audition" width="38" height="38" loading="lazy"
+              style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Sound Design &amp; Mixing</h4>
             <p>Audio cleanup, SFX layering, LUFS optimization.</p>
           </div>
@@ -732,17 +736,6 @@
 
       <!-- ✅ FIX: GRAPHIC DESIGN PANEL AB CONTAINER KE ANDAR HAI -->
       <div class="skills-panel" id="panel-design" style="position:relative;">
-        <div class="design-grid-bg"></div>
-        <div class="skills-grid" style="position:relative; z-index:2;">
-          <div class="skill-card reveal">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_CC_icon.svg/512px-Adobe_Photoshop_CC_icon.svg.png"
-              alt="Photoshop" width="38" height="38"
-              style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);"
-              onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMjggMTI4Jz48cmVjdCB3aWR0aD0nMTI4JyBoZWlnaHQ9JzEyOCcgcng9JzIwJyBmaWxsPSdibGFjaycvPjxyZWN0IHg9JzYnIHk9JzYnIHdpZHRoPScxMTYnIGhlaWdodD0nMTE2JyByeD0nMTQnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzMxQThGRicgc3Ryb2tlLXdpZHRoPSc2Jy8+PHRleHQgeD0nNjQnIHk9JzkwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtd2VpZ2h0PSc5MDAnIGZvbnQtc2l6ZT0nNjQnIGZpbGw9JyMzMUE4RkYnIHRleHQtYW5jaG9yPSdtaWRkbGUnPlBzPC90ZXh0Pjwvc3ZnPg=='">
-            <h4>Adobe Photoshop</h4>
-            <p>Photo editing, compositing, thumbnail design.</p>
-          </div>
           <div class="skill-card reveal">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adobe_Illustrator_CC_icon.svg/512px-Adobe_Illustrator_CC_icon.svg.png"
@@ -1108,6 +1101,51 @@
 
   <!-- Scroll Timecode Overlay -->
   <div class="scroll-timecode">
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">ANSHAY<span>.</span></div>
+        <div class="footer-links">
+          <a href="#portfolio">Work</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-socials">
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="mailto:yashubasene@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+          <a href="https://wa.me/918319610243" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <p class="footer-copy">© 2025 ANSHAY BASENE · VIDEO EDITOR &amp; GRAPHIC DESIGNER · BHOPAL, MP</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-inner">
+      <div class="lightbox-title" id="lightbox-title">Preview</div>
+      <span class="lightbox-close" onclick="closeLightbox(event)">✕</span>
+      <iframe id="lightbox-iframe" src="" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+      <video id="lightbox-video" controls autoplay playsinline
+        style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;"></video>
+      <img id="lightbox-image" alt="Preview"
+        style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;">
+    </div>
+  </div>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/918319610243" class="wa-float" target="_blank" title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Scroll Timecode Overlay -->
+  <div class="scroll-timecode">
     <span id="tc-hours">01</span>:<span id="tc-mins">00</span>:<span id="tc-secs">00</span>:<span
       id="tc-frames">00</span>
   </div>
@@ -1125,10 +1163,6 @@
   <div class="cursor-dot"></div>
   <div class="cursor-outline"><span class="cursor-text">PLAY</span></div>
 
-  <!-- Main JS file: scroll, animation, dynamic portfolio, lightbox, cursor sab yahin se chalta hai -->
-  <script src="script.js"></script>
-  <!-- Premium 3D Masonry Showcase -->
-  <script src="showcase.js"></script>
   <!-- ===== WHATSAPP QUICK BRIEF WIDGET ===== -->
   <div class="wa-brief-wrap">
     <button class="wa-brief-trigger" id="wa-brief-trigger" title="Quick Project Brief">
@@ -1163,9 +1197,14 @@
       </button>
     </div>
   </div>
-  <script src="mobile-perf.js"></script>
-  <script src="features.js"></script>
-  <script src="soundfix.js"></script>
-  <script src="extras.js"></script>
+
+  <!-- App scripts: deferred so they never block HTML parsing or first paint -->
+  <script src="script.js" defer></script>
+  <!-- Premium 3D Masonry Showcase -->
+  <script src="showcase.js" defer></script>
+  <script src="mobile-perf.js" defer></script>
+  <script src="features.js" defer></script>
+  <!-- soundfix.js removed: duplicate Web Audio logic already in extras.js -->
+  <script src="extras.js" defer></script>
 </body>
 </html>

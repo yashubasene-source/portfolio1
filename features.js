@@ -73,42 +73,4 @@
   }
 })();
 
-// ===== 5. SMOOTH SHOWREEL BUTTON STYLE (injected via JS) =====
-(function injectShowreelBtnStyles() {
-  const s = document.createElement('style');
-  s.textContent = `
-    .hero-showreel-btn {
-      margin-top: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 28px;
-      border-radius: 100px;
-      background: rgba(168,85,247,0.15);
-      border: 1px solid rgba(168,85,247,0.4);
-      color: #c084fc;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.25s;
-      width: 100%;
-      justify-content: center;
-    }
-    .hero-showreel-btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 8px 28px rgba(168,85,247,0.4);
-      transform: translateY(-2px);
-    }
-    .hero-showreel-btn i {
-      font-size: 0.9rem;
-    }
-    @media (max-width: 768px) {
-      .hero-showreel-btn { font-size: 0.78rem; padding: 10px 20px; }
-    }
-  `;
-  document.head.appendChild(s);
-})();
+/* Showreel button styles moved to features.css — JS style injection removed to prevent FOUC and save main thread */
