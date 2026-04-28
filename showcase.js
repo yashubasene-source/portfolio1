@@ -17,32 +17,345 @@
     { id:'sv-06', title:'Economic Environment — MBA',         client:'Educational Channel', ytId:'SEDPUBFEMo4', link:'https://www.youtube.com/embed/SEDPUBFEMo4?autoplay=1&rel=0',   tags:['Educational','Documentary'] }
   ].map(v => ({ ...v, type:'video', ratio:'ratio-16-9', openType:'iframe' }));
 
-  /* ── REELS DATA (all 30 local MP4s) ── */
-  const REEL_FILES = [
-    'Portfolio-Reel (1).mp4','Portfolio-Reel (2).mp4','Portfolio-Reel (3).mp4','Portfolio-Reel (4).mp4',
-    'Portfolio-Reel (5).mp4','Portfolio-Reel (6).mp4','Portfolio-Reel (7).mp4','Portfolio-Reel (8).mp4',
-    'Portfolio-Reel (9).mp4','Portfolio-Reel (10).mp4','Portfolio-Reel (11).mp4','Portfolio-Reel (12).mp4',
-    'Portfolio-Reel (13).mp4','Portfolio-Reel (14).mp4','Portfolio-Reel (15).mp4','Portfolio-Reel (16).mp4',
-    'Portfolio-Reel (17).mp4','Portfolio-Reel (18).mp4','Portfolio-Reel (19).mp4','Portfolio-Reel (20).mp4',
-    'Portfolio-Reel (21).mp4','Portfolio-Reel (22).mp4','Portfolio-Reel (23).mp4','Portfolio-Reel (24).mp4',
-    'Portfolio-Reel (25).mp4','Portfolio-Reel (26).mp4','POrtfolio-Reel (27).mp4','Portfolio-Reel (28).mp4',
-    'Protfolio-Reel (29).mp4','Protfolio-Reel (30).mp4'
-  ];
-  const RATIOS_REEL = ['ratio-9-16','ratio-9-16','ratio-9-16','ratio-4-5','ratio-9-16','ratio-9-16','ratio-9-16','ratio-4-5','ratio-9-16','ratio-9-16'];
-  const MOTIONS = REEL_FILES.map((f, i) => {
-    const src = 'projects/video/' + f;
-    return {
-      id: 'sr-' + String(i+1).padStart(2,'0'),
+  /* ── REELS DATA (YouTube Playlist) ── */
+    const MOTIONS = [
+    {
+      id: 'mo-01',
       type: 'motion',
-      title: 'Portfolio Reel — Cut ' + String(i+1).padStart(2,'0'),
-      client: 'Short Form Edit',
-      ratio: RATIOS_REEL[i % RATIOS_REEL.length],
-      videoSrc: src,
-      link: src,
-      openType: 'video',
-      tags: ['Reel','Cinematic']
-    };
-  });
+      title: 'Fun edit-2',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/PdRET3BPOEw/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/PdRET3BPOEw?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'fun-edit',
+      tags: ['fun-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-02',
+      type: 'motion',
+      title: 'Fun edit-1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/Hl6tbrqNzLA/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/Hl6tbrqNzLA?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'fun-edit',
+      tags: ['fun-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-03',
+      type: 'motion',
+      title: 'Daily-Documentry-5',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/rDedeIV_Aps/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/rDedeIV_Aps?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-04',
+      type: 'motion',
+      title: 'Daily-Documentry-4',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/q4jkMc7PH5k/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/q4jkMc7PH5k?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-05',
+      type: 'motion',
+      title: 'Daily-Documentry-3',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/gfHHf6p3VrA/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/gfHHf6p3VrA?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-06',
+      type: 'motion',
+      title: 'Typography-9',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/nPS2mbhDqY0/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/nPS2mbhDqY0?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-07',
+      type: 'motion',
+      title: 'Typography-8',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/Q-z70AQ_LEM/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/Q-z70AQ_LEM?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-08',
+      type: 'motion',
+      title: 'Normal edit-4',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/Y9moP0Zoax8/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/Y9moP0Zoax8?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-09',
+      type: 'motion',
+      title: 'Typography-7',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/GzTTDmcxJ3s/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/GzTTDmcxJ3s?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-10',
+      type: 'motion',
+      title: 'Fun edit-3',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/d6dCSs67AOI/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/d6dCSs67AOI?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'fun-edit',
+      tags: ['fun-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-11',
+      type: 'motion',
+      title: 'Typography-6',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/BbWgPZrcxck/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/BbWgPZrcxck?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-12',
+      type: 'motion',
+      title: 'Typography-4',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/QAo0moIKqMg/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/QAo0moIKqMg?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-13',
+      type: 'motion',
+      title: 'Daily-Documentry-7',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/g0ZplnuAQUM/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/g0ZplnuAQUM?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-14',
+      type: 'motion',
+      title: 'Typography-5',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/coYHW222eFs/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/coYHW222eFs?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-15',
+      type: 'motion',
+      title: 'Typography-4',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/dsxddBiZ-Ek/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/dsxddBiZ-Ek?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-16',
+      type: 'motion',
+      title: 'Normal esdit-6',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/kj55nEi4sYE/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/kj55nEi4sYE?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-17',
+      type: 'motion',
+      title: 'Fun edit-4',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/avDr-1331LU/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/avDr-1331LU?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'fun-edit',
+      tags: ['fun-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-18',
+      type: 'motion',
+      title: 'Normal esdit-5',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/I3fNfDbYT_M/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/I3fNfDbYT_M?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-19',
+      type: 'motion',
+      title: 'Daily-Documentry-2',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/0PmcMrtTJlM/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/0PmcMrtTJlM?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-20',
+      type: 'motion',
+      title: 'Daily-Documentry-1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/XRrLmvfPpKM/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/XRrLmvfPpKM?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'daily-edit',
+      tags: ['daily-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-21',
+      type: 'motion',
+      title: 'Motion-1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/D4qD8ZG4MIE/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/D4qD8ZG4MIE?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'motion',
+      tags: ['motion', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-22',
+      type: 'motion',
+      title: 'Normal edit-1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/z1h96HEBA8g/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/z1h96HEBA8g?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-23',
+      type: 'motion',
+      title: 'Reelstate-1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/4RDrmm_QBZw/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/4RDrmm_QBZw?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'motion',
+      tags: ['motion', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-24',
+      type: 'motion',
+      title: 'Typography-3',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/_gVvYlMeuLw/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/_gVvYlMeuLw?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-25',
+      type: 'motion',
+      title: 'Normal edit-2',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/4Ku6Ve7zIHY/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/4Ku6Ve7zIHY?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-26',
+      type: 'motion',
+      title: 'Normal edit-3',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/V_V1EGIMNj0/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/V_V1EGIMNj0?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'normal-edit',
+      tags: ['normal-edit', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-27',
+      type: 'motion',
+      title: 'Typography-2',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/He4asxOy3CQ/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/He4asxOy3CQ?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    },
+    {
+      id: 'mo-28',
+      type: 'motion',
+      title: 'Typography -1',
+      client: 'YouTube Shorts',
+      ratio: 'ratio-9-16',
+      img: 'https://img.youtube.com/vi/IqK1a7_fuTw/maxresdefault.jpg',
+      link: 'https://www.youtube.com/embed/IqK1a7_fuTw?autoplay=1&rel=0&loop=1',
+      openType: 'iframe',
+      niche: 'typography',
+      tags: ['typography', 'Reel', 'Shorts']
+    }
+  ];
 
   /* ── GRAPHICS DATA (all 17 local files) ── */
   const GRAPHIC_FILES = [
@@ -75,8 +388,48 @@
     tags: g.tags
   }));
 
+  /* ── DYNAMIC PROJECTS FROM LOCALSTORAGE ── */
+  function extractYoutubeId(url) {
+    if (!url) return null;
+    var match = url.match(/(?:youtube\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  var DYNAMIC_PROJECTS = [];
+  try {
+    for (var key in localStorage) {
+      if (key.startsWith('portfolio_update_') || key.includes('-')) {
+        var val = localStorage.getItem(key);
+        if (val && val.startsWith('{')) {
+          var item = JSON.parse(val);
+          if (item && item.title) {
+            var typeMap = { 'long-video': 'video', 'short-reel': 'motion', 'graphic': 'graphic' };
+            var type = typeMap[item.type] || 'video';
+            var idMatch = extractYoutubeId(item.link);
+            var isGraphic = type === 'graphic';
+            var ytTh = idMatch ? 'https://img.youtube.com/vi/' + idMatch + '/maxresdefault.jpg' : '';
+            var img = item.thumbnail || ytTh || (isGraphic ? item.link : '');
+            
+            DYNAMIC_PROJECTS.push({
+              id: key,
+              type: type,
+              title: item.title,
+              client: item.description || 'Admin Upload',
+              ratio: isGraphic ? 'ratio-4-5' : 'ratio-16-9',
+              img: img,
+              link: item.link,
+              openType: item.link && (item.link.includes('youtube') || item.link.includes('youtu.be')) ? 'iframe' : (isGraphic ? 'image' : 'video'),
+              niche: item.niche || 'all',
+              tags: [item.niche]
+            });
+          }
+        }
+      }
+    }
+  } catch(e) {}
+
   /* ── MERGE ALL ── */
-  const SHOWCASE_PROJECTS = [...VIDEOS, ...MOTIONS, ...GRAPHIC_FILES];
+  const SHOWCASE_PROJECTS = [...VIDEOS, ...MOTIONS, ...GRAPHIC_FILES, ...DYNAMIC_PROJECTS];
 
   /* ================================================
      HELPERS
@@ -148,14 +501,49 @@
   }
 
   /* ================================================
-     RENDER
+     STATE & RENDER
   ================================================ */
-  function renderShowcase(filter) {
+  var currentSkill = 'all';
+  var currentNiche = 'all';
+
+  function renderShowcase() {
     var grid = document.getElementById('showcase-grid');
     if (!grid) return;
-    var list = filter==='all' ? SHOWCASE_PROJECTS : SHOWCASE_PROJECTS.filter(function(p){ return p.type===filter; });
+
+    var nicheToCategory = {
+      'all': null,
+      'fun-edit': ['fun edit', 'fun-edit', 'fun'],
+      'daily-edit': ['daily edit', 'daily-edit', 'daily'],
+      'motion': ['motion'],
+      'normal-edit': ['normal edit', 'normal-edit', 'normal'],
+      'typography': ['typography']
+    };
+
+    var list = SHOWCASE_PROJECTS.filter(function(p) {
+      // Check Skill Filter (Video/Graphic/Motion)
+      var skillMatch = (currentSkill === 'all') || (p.type === currentSkill);
+      
+      // Check Niche Filter (Fun Edit/Daily Edit/etc.)
+      var targetCats = nicheToCategory[currentNiche];
+      var nicheMatch = true;
+      if (targetCats) {
+        var cNiche = (p.niche || '').toLowerCase();
+        var cTags = (p.tags || []).join(' ').toLowerCase();
+        nicheMatch = targetCats.some(function(tc) {
+          return cNiche.includes(tc) || cTags.includes(tc);
+        });
+      }
+      return skillMatch && nicheMatch;
+    });
+
     grid.innerHTML = '';
     list.forEach(function(proj, i){ grid.appendChild(buildCard(proj, Math.min(i*0.05, 0.5))); });
+    
+    var countEl = document.getElementById('sc-count');
+    if (countEl) {
+      countEl.innerHTML = '<strong>' + list.length + '</strong> projects';
+    }
+    
     requestAnimationFrame(observeCards);
   }
 
@@ -203,20 +591,49 @@
      FILTERS
   ================================================ */
   function initFilters() {
-    var tabs=document.querySelectorAll('.showcase-tab'), countEl=document.getElementById('sc-count');
+    var tabs = document.querySelectorAll('.showcase-tab');
     tabs.forEach(function(tab){
       tab.addEventListener('click',function(){
         tabs.forEach(function(t){ t.classList.remove('active'); });
         tab.classList.add('active');
-        var f=tab.dataset.filter;
-        var n=f==='all'?SHOWCASE_PROJECTS.length:SHOWCASE_PROJECTS.filter(function(p){return p.type===f;}).length;
-        if(countEl) countEl.innerHTML='<strong>'+n+'</strong> projects';
-        renderShowcase(f);
+        currentSkill = tab.dataset.filter;
+        renderShowcase();
         requestAnimationFrame(function(){ attachTilt(); attachCursor(); });
       });
     });
-    if(countEl) countEl.innerHTML='<strong>'+SHOWCASE_PROJECTS.length+'</strong> projects';
   }
+
+  // Override the global filterNiche to sync with our dual-filter state
+  window.filterNiche = function(btn, niche) {
+    document.querySelectorAll('.niche-tag').forEach(function(b){ b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    
+    if (window.SoundEngine && window.SoundEngine.play) {
+      window.SoundEngine.play('filter');
+    }
+    
+    currentNiche = niche;
+    renderShowcase();
+    requestAnimationFrame(function(){ attachTilt(); attachCursor(); });
+
+    // Also update any old .port-card items just in case they exist
+    var map = {
+      'all': null,
+      'fun-edit': ['fun edit', 'fun-edit', 'fun'],
+      'daily-edit': ['daily edit', 'daily-edit', 'daily'],
+      'motion': ['motion'],
+      'normal-edit': ['normal edit', 'normal-edit', 'normal'],
+      'typography': ['typography']
+    };
+    var keywords = map[niche] || null;
+    document.querySelectorAll('.port-card').forEach(function(card) {
+      if (!keywords) { card.removeAttribute('data-niche-hidden'); return; }
+      var cat = (card.dataset.category || '').toLowerCase();
+      var cNiche = (card.dataset.niche || '').toLowerCase();
+      var matches = keywords.some(function(k){ return cat.includes(k) || cNiche.includes(k); });
+      matches ? card.removeAttribute('data-niche-hidden') : card.setAttribute('data-niche-hidden','true');
+    });
+  };
 
   /* ================================================
      SPOTLIGHT
@@ -250,7 +667,7 @@
   ================================================ */
   function boot() {
     if (!document.getElementById('showcase-grid')) return;
-    renderShowcase('all');
+    renderShowcase();
     requestAnimationFrame(function(){ initFilters(); attachTilt(); attachCursor(); initSpotlight(); });
   }
 

@@ -71,8 +71,8 @@ function loadPortfolioData() {
         if (Number.isNaN(slotNumber)) continue;
         const contentType = override?.type || typeFromKey;
 
-        if (contentType && data[contentType] && data[contentType][slotNumber]) {
-          data[contentType][slotNumber] = { ...data[contentType][slotNumber], ...override };
+        if (contentType && data[contentType]) {
+          data[contentType][slotNumber] = { ...(data[contentType][slotNumber] || {}), ...override };
         }
         continue;
       }
@@ -84,9 +84,9 @@ function loadPortfolioData() {
         const contentType = parts.join('-');
         const slotNumber = parseInt(slotNum, 10);
 
-        if (data[contentType] && data[contentType][slotNumber]) {
+        if (data[contentType]) {
           const override = JSON.parse(storedValue);
-          data[contentType][slotNumber] = { ...data[contentType][slotNumber], ...override };
+          data[contentType][slotNumber] = { ...(data[contentType][slotNumber] || {}), ...override };
         }
       }
     } catch (error) {
@@ -272,7 +272,8 @@ function buildCaseStudyProjects(data) {
       imageFallback: fallback,
       ratio,
       previewType: previewMedia.previewType,
-      previewUrl: previewMedia.previewUrl
+      previewUrl: previewMedia.previewUrl,
+      niche: item.niche
     });
 
     index += 1;
@@ -290,6 +291,7 @@ function createCaseStudyCard(item) {
   const card = document.createElement('article');
   card.className = 'port-card reveal';
   card.dataset.category = item.category;
+  if (item.niche) card.dataset.niche = item.niche;
   card.dataset.caseId = item.id;
   card.tabIndex = 0;
   card.setAttribute('role', 'button');
@@ -433,19 +435,36 @@ function closeCaseStudy(event) {
 
 function createReelCard(item) {
   // Short reel ke liye card banata hai.
+  const isYoutube = item.link && (item.link.includes('youtube.com') || item.link.includes('youtu.be'));
   const card = document.createElement('div');
   card.className = 'reel-card reel-card--reel';
-  card.innerHTML = `
-    <div class="reel-video">
-      <video src="${item.link}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''} preload="auto" muted playsinline></video>
-      <div class="reel-play-icon"><i class="fas fa-play"></i></div>
-    </div>
-    <div class="reel-info">
-      <h5>${item.title}</h5>
-      <p>${item.description}</p>
-    </div>
-  `;
-  card.dataset.mediaType = 'video';
+  
+  if (isYoutube) {
+    const ytId = extractYoutubeId(item.link);
+    const thumb = item.thumbnail || (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : '');
+    card.innerHTML = `
+      <div class="reel-video" style="background: url('${thumb}') center/cover; position: relative;">
+        <div class="reel-play-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="reel-info">
+        <h5>${item.title}</h5>
+        <p>${item.description}</p>
+      </div>
+    `;
+    card.dataset.mediaType = 'iframe';
+  } else {
+    card.innerHTML = `
+      <div class="reel-video">
+        <video src="${item.link}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''} preload="auto" muted playsinline></video>
+        <div class="reel-play-icon"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="reel-info">
+        <h5>${item.title}</h5>
+        <p>${item.description}</p>
+      </div>
+    `;
+    card.dataset.mediaType = 'video';
+  }
   card.dataset.mediaUrl = item.link;
   card.dataset.mediaTitle = item.title;
   return card;
@@ -492,16 +511,20 @@ function renderPortfolioGrids() {
   const reelsTrack = document.getElementById('reels-track');
   if (reelsTrack) {
     reelsTrack.innerHTML = '';
-    for (let i = 1; i <= 10; i += 1) {
-      reelsTrack.appendChild(createReelCard(data['short-reel'][i]));
+    for (let i = 1; i <= 50; i += 1) {
+      if (data['short-reel'] && data['short-reel'][i] && data['short-reel'][i].title) {
+        reelsTrack.appendChild(createReelCard(data['short-reel'][i]));
+      }
     }
   }
 
   const graphicsTrack = document.getElementById('graphics-track');
   if (graphicsTrack) {
     graphicsTrack.innerHTML = '';
-    for (let i = 1; i <= 10; i += 1) {
-      graphicsTrack.appendChild(createGraphicCard(data.graphic[i]));
+    for (let i = 1; i <= 50; i += 1) {
+      if (data.graphic && data.graphic[i] && data.graphic[i].title) {
+        graphicsTrack.appendChild(createGraphicCard(data.graphic[i]));
+      }
     }
   }
 }
@@ -823,6 +846,13 @@ function filterWork(cat, btn) {
 }
 
 function openLightbox(url, mediaType = 'iframe', title = 'Preview') {
+  if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
+    mediaType = 'iframe';
+    const ytId = extractYoutubeId(url);
+    if (ytId) {
+      url = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+    }
+  }
   // Lightbox teen mode me kaam karta hai:
   // iframe -> long-form / YouTube
   // video  -> short reel

@@ -64,6 +64,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
 
+</head>
 <body>
 
   <!-- ===== CINEMATIC PRELOADER ===== -->
@@ -278,41 +279,38 @@
       <!-- Niche Selector Bar -->
       <div class="niche-bar reveal" id="niche-bar" role="group" aria-label="Filter by niche">
         <button class="niche-tag active" data-niche="all" onclick="filterNiche(this, 'all')">
-          <i class="fas fa-th"></i> All Work
+          <i class="fas fa-th"></i> <span>All Work</span>
         </button>
-        <button class="niche-tag" data-niche="youtube" onclick="filterNiche(this, 'youtube')">
-          <i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube
+        <button class="niche-tag" data-niche="fun-edit" onclick="filterNiche(this, 'fun-edit')">
+          <i class="fas fa-smile" style="color:#FFD700;"></i> <span>Fun Edit</span>
         </button>
-        <button class="niche-tag" data-niche="political" onclick="filterNiche(this, 'political')">
-          <i class="fas fa-landmark" style="color:#FFD700;"></i> Political
+        <button class="niche-tag" data-niche="daily-edit" onclick="filterNiche(this, 'daily-edit')">
+          <i class="fas fa-calendar-day" style="color:#00C896;"></i> <span>Daily Edit</span>
         </button>
-        <button class="niche-tag" data-niche="realestate" onclick="filterNiche(this, 'realestate')">
-          <i class="fas fa-building" style="color:#00C896;"></i> Real Estate
+        <button class="niche-tag" data-niche="motion" onclick="filterNiche(this, 'motion')">
+          <i class="fas fa-bolt" style="color:#31A8FF;"></i> <span>Motion</span>
         </button>
-        <button class="niche-tag" data-niche="educational" onclick="filterNiche(this, 'educational')">
-          <i class="fas fa-graduation-cap" style="color:#31A8FF;"></i> Educational
+        <button class="niche-tag" data-niche="normal-edit" onclick="filterNiche(this, 'normal-edit')">
+          <i class="fas fa-video" style="color:#FF9A00;"></i> <span>Normal Edit</span>
         </button>
-        <button class="niche-tag" data-niche="commercial" onclick="filterNiche(this, 'commercial')">
-          <i class="fas fa-briefcase" style="color:#FF9A00;"></i> Commercial
-        </button>
-        <button class="niche-tag" data-niche="graphics" onclick="filterNiche(this, 'graphics')">
-          <i class="fas fa-palette" style="color:#a855f7;"></i> Graphics
+        <button class="niche-tag" data-niche="typography" onclick="filterNiche(this, 'typography')">
+          <i class="fas fa-font" style="color:#a855f7;"></i> <span>Typography</span>
         </button>
       </div>
 
       <!-- Filter Tabs -->
       <nav class="showcase-filters reveal" role="tablist" aria-label="Portfolio category filters">
         <button class="showcase-tab active" type="button" data-filter="all" role="tab" aria-selected="true">
-          <span class="tab-dot"></span> All Work
+          <span class="tab-dot"></span> <span>All Work</span>
         </button>
         <button class="showcase-tab" type="button" data-filter="video" role="tab" aria-selected="false">
-          <span class="tab-dot"></span> Videos
+          <span class="tab-dot"></span> <span>Videos</span>
         </button>
         <button class="showcase-tab" type="button" data-filter="graphic" role="tab" aria-selected="false">
-          <span class="tab-dot"></span> Graphics
+          <span class="tab-dot"></span> <span>Graphics</span>
         </button>
         <button class="showcase-tab" type="button" data-filter="motion" role="tab" aria-selected="false">
-          <span class="tab-dot"></span> Motion
+          <span class="tab-dot"></span> <span>Motion</span>
         </button>
       </nav>
 

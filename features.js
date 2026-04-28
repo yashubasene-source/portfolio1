@@ -46,69 +46,7 @@
   }
 })();
 
-// ===== 3. NICHE FILTER FUNCTION =====
-function filterNiche(btn, niche) {
-  // Update active state on niche bar
-  document.querySelectorAll('.niche-tag').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  // Map niche to portfolio card categories
-  const nicheToCategory = {
-    'all': null,
-    'youtube': ['typography', 'educational'],
-    'political': ['documentary'],
-    'realestate': ['commercial'],
-    'educational': ['educational'],
-    'commercial': ['commercial'],
-    'graphics': ['poster', 'thumbnail']
-  };
-
-  const targetCategories = nicheToCategory[niche];
-
-  // Filter masonry cards
-  document.querySelectorAll('.port-card').forEach(card => {
-    if (!targetCategories) {
-      // Show all
-      card.removeAttribute('data-niche-hidden');
-      card.classList.remove('is-hiding', 'is-hidden');
-      return;
-    }
-    const cardCat = (card.dataset.category || '').toLowerCase();
-    const cardNiche = (card.dataset.niche || '').toLowerCase();
-    const matches = targetCategories.some(tc =>
-      cardCat.includes(tc) || cardNiche.includes(tc)
-    );
-    if (matches) {
-      card.removeAttribute('data-niche-hidden');
-      card.classList.remove('is-hiding', 'is-hidden');
-    } else {
-      card.setAttribute('data-niche-hidden', 'true');
-    }
-  });
-
-  // Also filter showcase grid if present
-  document.querySelectorAll('#showcase-grid .masonry-card, #showcase-grid [data-category]').forEach(card => {
-    if (!targetCategories) {
-      card.style.display = '';
-      return;
-    }
-    const cardCat = (card.dataset.category || '').toLowerCase();
-    const matches = targetCategories.some(tc => cardCat.includes(tc));
-    card.style.display = matches ? '' : 'none';
-  });
-
-  // Update count label
-  const countEl = document.getElementById('sc-count');
-  if (countEl) {
-    const visibleCount = document.querySelectorAll('#showcase-grid [data-category]:not([style*="none"])').length ||
-                         document.querySelectorAll('.port-card:not([data-niche-hidden])').length;
-    if (niche !== 'all') {
-      countEl.textContent = `${visibleCount} project${visibleCount !== 1 ? 's' : ''} in this niche`;
-    } else {
-      countEl.textContent = '';
-    }
-  }
-}
+// ===== 3. NICHE FILTER FUNCTION — Removed, now handled in showcase.js =====
 
 // ===== 4. HERO SHOWREEL VIDEO TOGGLE =====
 // Ek small "Play Showreel" button add karna — hero right image click pe

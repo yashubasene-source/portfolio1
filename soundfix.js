@@ -225,61 +225,8 @@ document.addEventListener('DOMContentLoaded', function() {
 let lastScrollSoundTime = 0;
 
 // ============================================================
-// FIX: NICHE BAR FILTER — works with showcase.js data
+// FIX: NICHE BAR FILTER — Removed from here, now handled in showcase.js
 // ============================================================
-window.filterNiche = function(btn, niche) {
-  // Active state
-  document.querySelectorAll('.niche-tag').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  window.SoundEngine.play('filter');
-
-  // Map niche to category keywords
-  const map = {
-    'all': null,
-    'youtube': ['youtube', 'educational', 'reel', 'short', 'motivation'],
-    'political': ['political', 'documentary', 'campaign'],
-    'realestate': ['real estate', 'property', 'realestate', 'commercial'],
-    'educational': ['educational', 'education', 'academic'],
-    'commercial': ['commercial', 'brand', 'advertising', 'promo'],
-    'graphics': ['graphic', 'poster', 'thumbnail', 'logo', 'design', 'typography']
-  };
-  const keywords = map[niche] || null;
-
-  // Filter .masonry-card (showcase.js cards)
-  document.querySelectorAll('#showcase-grid .masonry-card').forEach(card => {
-    if (!keywords) {
-      card.style.display = '';
-      card.style.opacity = '1';
-      return;
-    }
-    const cat = (card.dataset.category || '').toLowerCase();
-    const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
-    const matches = keywords.some(k => cat.includes(k) || title.includes(k));
-    card.style.display = matches ? '' : 'none';
-    if (matches) {
-      card.style.opacity = '0';
-      setTimeout(() => card.style.opacity = '1', 50);
-    }
-  });
-
-  // Also filter .port-card if any
-  document.querySelectorAll('.port-card').forEach(card => {
-    if (!keywords) { card.removeAttribute('data-niche-hidden'); return; }
-    const cat = (card.dataset.category || '').toLowerCase();
-    const matches = keywords.some(k => cat.includes(k));
-    matches ? card.removeAttribute('data-niche-hidden') : card.setAttribute('data-niche-hidden','true');
-  });
-
-  // Update count
-  const countEl = document.getElementById('sc-count');
-  if (countEl && niche !== 'all') {
-    const vis = document.querySelectorAll('#showcase-grid .masonry-card:not([style*="display: none"]):not([style*="display:none"])').length;
-    countEl.textContent = vis > 0 ? `${vis} projects` : 'No projects in this niche yet';
-  } else if (countEl) {
-    countEl.textContent = '';
-  }
-};
 
 // ============================================================
 // FIX: WHATSAPP BRIEF WIDGET — Real phone number

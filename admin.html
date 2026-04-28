@@ -73,10 +73,11 @@
         <label>Select Niche Category</label>
         <select id="nicheType" required onchange="updateSlotGuide()">
           <option value="" disabled selected>Select Niche...</option>
+          <option value="fun-edit">Fun Edit</option>
+          <option value="daily-edit">Daily Edit</option>
+          <option value="motion">Motion</option>
+          <option value="normal-edit">Normal Edit</option>
           <option value="typography">Typography</option>
-          <option value="educational">Educational</option>
-          <option value="documentary">Documentary</option>
-          <option value="commercial">Commercial / Real Estate</option>
         </select>
       </div>
 
@@ -131,22 +132,25 @@
     // ========== SLOT VALIDATION RULES ==========
     const slotRules = {
       'long-video': {
-        typography: [1, 2, 3],
-        educational: [4, 5, 6],
-        documentary: [7, 8, 9, 10],
-        commercial: [7, 8, 9, 10]
+        'fun-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'daily-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'motion': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'normal-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'typography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       },
       'short-reel': {
-        typography: [1, 2, 3],
-        educational: [4, 5, 6],
-        documentary: [7, 8, 9, 10],
-        commercial: [7, 8, 9, 10]
+        'fun-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'daily-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'motion': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'normal-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'typography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       },
       'graphic': {
-        typography: [1, 2, 3],
-        educational: [4, 5, 6],
-        documentary: [7, 8, 9, 10],
-        commercial: [7, 8, 9, 10]
+        'fun-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'daily-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'motion': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'normal-edit': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'typography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       }
     };
 
@@ -291,12 +295,21 @@
       }
 
       // ========== SAVE TO LOCALSTORAGE ==========
-      // Search/change this key format only if you also update script.js loadPortfolioData().
-      const key = `${contentType}-${slotNum}`;
+      // Calculate global slot to avoid collisions between niches
+      const nicheOffsets = {
+        'fun-edit': 0,
+        'daily-edit': 10,
+        'motion': 20,
+        'normal-edit': 30,
+        'typography': 40
+      };
+      const globalSlotNum = (nicheOffsets[niche] || 0) + slotNum;
+      const key = `${contentType}-${globalSlotNum}`;
+      
       const updateData = {
         type: contentType,
         niche: niche,
-        slot: slotNum,
+        slot: globalSlotNum,
         title: title,
         description: description,
         link: link,
