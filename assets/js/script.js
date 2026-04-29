@@ -530,12 +530,10 @@ function renderPortfolioGrids() {
 }
 
 const lenis = new Lenis({
-  // Smooth scrolling settings â€” mobile pe syncTouch true rakhna zaroori hai
+  // Smooth scrolling settings
   duration: window.innerWidth <= 768 ? 0.8 : 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothWheel: true,
-  syncTouch: window.innerWidth <= 768, // Mobile pe native-feel scroll
-  touchMultiplier: 1.5
+  smoothWheel: true
 });
 
 /* RAF loop for Lenis */

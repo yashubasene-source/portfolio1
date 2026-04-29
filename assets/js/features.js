@@ -2,15 +2,17 @@
    FEATURES.JS — Showreel Video, Urgency Slots, Niche Filter
    ============================================================ */
 
-// ===== 1. SHOWREEL HERO VIDEO — load only on desktop =====
+// ===== 1. SHOWREEL HERO VIDEO =====
 (function initShowreel() {
-  if (window.innerWidth <= 768) return; // Skip on mobile
   const video = document.getElementById('hero-showreel');
   if (!video) return;
 
-  // Only activate if a <source> tag exists with actual src
+  // Check if video has a direct src OR a child <source> tag
+  const hasDirectSrc = video.src && video.src !== window.location.href;
   const source = video.querySelector('source');
-  if (!source || !source.src || source.src === window.location.href) return;
+  const hasSourceTag = source && source.src && source.src !== window.location.href;
+
+  if (!hasDirectSrc && !hasSourceTag) return;
 
   video.style.display = 'block';
   video.load();

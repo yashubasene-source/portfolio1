@@ -559,36 +559,7 @@ body:hover .cursor-outline {
   background:rgba(168,85,247,0.1); 
 }
 
-/* ========== NAVBAR STYLES ========== 
-   STRUCTURE: Fixed header with solid nav-inner container
-   LAYOUT: 3-section flex (logo | nav-links | hamburger)
-   
-   STATES:
-   1. Default: Transparent background
-   2. Scrolled (.scrolled class): Semi-transparent with backdrop blur + bottom border
-   
-   LOGO: "ANSHAY." text with colored dot accent
-   NAV-LINKS: Flex row with 32px gap
-   - Links: Muted gray, hover to white
-   - CTA button: Accent-colored pill with glow on hover
-   
-   HAMBURGER: Three-line menu (hidden on desktop, shown on mobile)
-   - Flex column with 5px gaps
-   - Animated spans (set up for animation in JavaScript)
-   
-   RESPONSIVE: nav-links hidden on tablet/mobile, hamburger shown instead
-*/
-/* ===== NAVBAR ===== */
-.nav { 
-  position:fixed; 
-  top:0; 
-  left:0; 
-  right:0; 
-   - data-speed attribute: Used by JavaScript for parallax calculation
-   - Positive speed: Moves same direction as mouse (closer)
-   - Negative speed: Moves opposite direction (farther away pseudodepth)
-   - blur(1px): Slightly blurred for atmospheric effect
-*/
+
 /* ===== GLOBAL PARALLAX BACKGROUND ===== */
 .parallax-bg-wrapper { 
   position:fixed; 
