@@ -18,8 +18,13 @@
   const circumference = 408;
   let current = 3;
   let frameCount = 0;
-  const totalFrames = 45; /* Reduced 90→1.5s: was blocking FCP for 3 full seconds */
-  const framesPerNum = 15;
+  
+  // Detect low-end device or slow connection for faster preloader
+  const isLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+                   (navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g') || navigator.connection.effectiveType.includes('3g')));
+                   
+  const totalFrames = isLowEnd ? 15 : 45; /* Low-end: 0.5s, High-end: 1.5s */
+  const framesPerNum = Math.floor(totalFrames / 3);
 
   function updateRing(progress) {
     if (!ring) return;

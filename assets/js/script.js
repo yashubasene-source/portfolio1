@@ -1,4 +1,4 @@
-﻿/* =========================================
+/* =========================================
    SCRIPT.JS - Anshay Basene Portfolio
    Cleaned interactive functionality
    ========================================= */
@@ -455,7 +455,7 @@ function createReelCard(item) {
   } else {
     card.innerHTML = `
       <div class="reel-video">
-        <video src="${item.link}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''} preload="auto" muted playsinline></video>
+        <video src="${item.link}" ${item.thumbnail ? `poster="${item.thumbnail}"` : ''} preload="none" muted playsinline></video>
         <div class="reel-play-icon"><i class="fas fa-play"></i></div>
       </div>
       <div class="reel-info">

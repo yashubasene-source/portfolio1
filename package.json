@@ -1,8 +1,12 @@
 {
   "devDependencies": {
-    "sharp": "^0.34.5"
+    "clean-css-cli": "^5.6.3",
+    "sharp": "^0.34.5",
+    "terser": "^5.31.0"
   },
   "scripts": {
-    "build": "echo 'Static site - no build needed'"
+    "minify:css": "cleancss -o assets/css/style.min.css assets/css/style.css && cleancss -o assets/css/features.min.css assets/css/features.css && cleancss -o assets/css/showcase.min.css assets/css/showcase.css && cleancss -o assets/css/extras.min.css assets/css/extras.css",
+    "minify:js": "terser assets/js/script.js -o assets/js/script.min.js -c -m && terser assets/js/showcase.js -o assets/js/showcase.min.js -c -m && terser assets/js/features.js -o assets/js/features.min.js -c -m && terser assets/js/extras.js -o assets/js/extras.min.js -c -m && terser assets/js/mobile-perf.js -o assets/js/mobile-perf.min.js -c -m",
+    "build": "npm run minify:css && npm run minify:js"
   }
 }

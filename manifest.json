@@ -1,0 +1,21 @@
+{
+  "name": "Anshay Basene - Video Editor",
+  "short_name": "Anshay",
+  "description": "Portfolio of Anshay Basene, Video Editor & Graphic Designer.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0d0a14",
+  "theme_color": "#a855f7",
+  "icons": [
+    {
+      "src": "anshay.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "anshay.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

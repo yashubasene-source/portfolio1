@@ -17,6 +17,28 @@ if (IS_MOBILE) {
   } catch(e) {}
 }
 
+// ===== VIDEO AUTOPLAY OPTIMIZATION =====
+// Auto-pause background videos when they scroll out of view to save CPU/GPU
+function initVideoOptimization() {
+  const videos = document.querySelectorAll('video[autoplay]');
+  if (!videos.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Use a slight timeout to prevent play() interruption errors during fast scrolling
+        setTimeout(() => {
+            if(entry.isIntersecting) entry.target.play().catch(e => console.log('Autoplay prevented:', e));
+        }, 150);
+      } else {
+        entry.target.pause();
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  videos.forEach(vid => observer.observe(vid));
+}
+
 // ===== BEFORE/AFTER SLIDER LOGIC =====
 function initBeforeAfterSliders() {
   const sliders = [
@@ -133,4 +155,5 @@ function initResultCounters() {
 document.addEventListener('DOMContentLoaded', () => {
   initBeforeAfterSliders();
   initResultCounters();
+  initVideoOptimization();
 });

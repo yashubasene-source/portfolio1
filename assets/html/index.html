@@ -41,11 +41,25 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
   <meta property="og:description" content="Cinematic videos, bold graphics, and motion that drives real results. Available for hire.">
-  <meta property="og:image" content="anshay.webp">
+  <meta property="og:image" content="assets/images/anshay.webp">
   <meta property="og:url" content="https://anshay.vercel.app">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Anshay Basene â€” Video Editor & Graphic Designer">
-  <meta name="twitter:image" content="anshay.webp">
+  <meta name="twitter:image" content="assets/images/anshay.webp">
+  
+  <!-- Web App Manifest for PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#a855f7">
+
+  <!-- Placeholder for Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script> -->
+
   <!-- ========== EXTERNAL FONTS & ICONS ========== -->
   <!-- Preconnect to font origins for faster DNS + TLS handshake -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,10 +70,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- ========== STYLESHEETS ========== -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="showcase.css">
-  <link rel="stylesheet" href="features.css">
-  <link rel="stylesheet" href="extras.css">
+  <link rel="stylesheet" href="assets/css/style.min.css">
+  <link rel="stylesheet" href="assets/css/showcase.min.css">
+  <link rel="stylesheet" href="assets/css/features.min.css">
+  <link rel="stylesheet" href="assets/css/extras.min.css">
 
 </head>
 <body>
@@ -138,7 +152,7 @@
   <!-- Showreel Hero Background Video -->
   <div class="hero-video-bg" id="hero-video-bg">
     <video id="hero-showreel" autoplay muted loop playsinline preload="none"
-      poster="anshay.png"
+      poster="assets/images/anshay.webp"
       style="display:none">
       <!-- Replace src with your actual showreel video path or YouTube iframe alternative -->
       <!-- e.g. <source src="projects/showreel.mp4" type="video/mp4"> -->
@@ -220,7 +234,7 @@
 
         <div class="hero-right reveal">
           <div class="hero-img-wrap">
-            <img src="anshay.webp" alt="Anshay Basene — Video Editor" width="480" height="600" loading="eager" fetchpriority="high" onerror="this.src='anshay.png'">
+            <img src="assets/images/anshay.webp" alt="Anshay Basene — Video Editor" width="480" height="600" loading="eager" fetchpriority="high">
             <div class="hero-tools-pill">
               <span style="color:#9999FF"><i class="fas fa-film"></i> Pr</span>
               <span style="color:#00B0FF"><i class="fas fa-magic"></i> Ae</span>
@@ -558,7 +572,7 @@
       <div class="about-grid">
         <div class="about-img-wrap reveal">
           <div class="about-img">
-            <img src="N1.webp" alt="Anshay Basene" width="480" height="600" loading="lazy" onerror="this.src='N1..png'">
+            <img src="assets/images/N1.webp" alt="Anshay Basene" width="480" height="600" loading="lazy">
           </div>
         </div>
 
@@ -686,21 +700,21 @@
         <div class="design-grid-bg"></div>
         <div class="skills-grid" style="position:relative; z-index:2;">
           <div class="skill-card reveal">
-            <img src="premiere-pro.webp"
+            <img src="assets/images/premiere-pro.webp"
               alt="Premiere Pro" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe Premiere Pro</h4>
             <p>Cuts, transitions, color correction, audio sync.</p>
           </div>
           <div class="skill-card reveal">
-            <img src="after-effects.webp"
+            <img src="assets/images/after-effects.webp"
               alt="After Effects" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Adobe After Effects</h4>
             <p>Motion graphics, VFX, kinetic typography.</p>
           </div>
           <div class="skill-card reveal">
-            <img src="davinci-resolve.webp" alt="DaVinci Resolve" width="38" height="38" loading="lazy"
+            <img src="assets/images/davinci-resolve.webp" alt="DaVinci Resolve" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Cinematic Color Grading</h4>
             <p>Custom LUTs, skin tone correction, mood grading.</p>
@@ -711,7 +725,7 @@
             <p>On-location shoots, cinematic framing, lighting.</p>
           </div>
           <div class="skill-card reveal">
-              src="adobe-audition.webp"
+            <img src="assets/images/adobe-audition.webp"
               alt="Adobe Audition" width="38" height="38" loading="lazy"
               style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <h4>Sound Design &amp; Mixing</h4>
@@ -727,6 +741,14 @@
 
       <!-- ✅ FIX: GRAPHIC DESIGN PANEL AB CONTAINER KE ANDAR HAI -->
       <div class="skills-panel" id="panel-design" style="position:relative;">
+        <div class="skills-grid" style="position:relative; z-index:2;">
+          <div class="skill-card reveal">
+            <img src="assets/images/photoshop.webp"
+              alt="Photoshop" width="38" height="38"
+              style="border-radius:8px; margin-bottom:16px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+            <h4>Adobe Photoshop</h4>
+            <p>Photo manipulation, compositing, retouching.</p>
+          </div>
           <div class="skill-card reveal">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adobe_Illustrator_CC_icon.svg/512px-Adobe_Illustrator_CC_icon.svg.png"
@@ -826,9 +848,9 @@
         </div>
       </div>
 
-      <div style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px;"
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; margin-top: 48px;"
         class="reveal">
-        <h3 style="margin-bottom:24px;font-size:1.1rem;">Per Project <span style="color:var(--green)">Rates</span></h3>
+        <h3 style="margin-bottom:24px;font-size:1.1rem;">Per Project <span style="color:var(--accent)">Rates</span></h3>
         <div class="rates-grid">
           <div class="rate-item">
             <div class="rate-label">Long-Form Video</div>
@@ -1047,6 +1069,7 @@
     </div>
   </div>
 
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container">
@@ -1075,52 +1098,7 @@
     <div class="lightbox-inner">
       <div class="lightbox-title" id="lightbox-title">Preview</div>
       <span class="lightbox-close" onclick="closeLightbox(event)">✕</span>
-      <iframe id="lightbox-iframe" src="" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
-      <video id="lightbox-video" controls autoplay playsinline
-        style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;"></video>
-      <img id="lightbox-image" alt="Preview"
-        style="display:none; width:100%; height:100%; object-fit:contain; border-radius:16px;">
-    </div>
-  </div>
-
-  <!-- WhatsApp Float -->
-  <a href="https://wa.me/918319610243" class="wa-float" target="_blank" title="Chat on WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
-  <!-- Scroll Timecode Overlay -->
-  <div class="scroll-timecode">
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-logo">ANSHAY<span>.</span></div>
-        <div class="footer-links">
-          <a href="#portfolio">Work</a>
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div class="footer-socials">
-          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="mailto:yashubasene@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
-          <a href="https://wa.me/918319610243" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-      <p class="footer-copy">© 2025 ANSHAY BASENE · VIDEO EDITOR &amp; GRAPHIC DESIGNER · BHOPAL, MP</p>
-    </div>
-  </footer>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <div class="lightbox-inner">
-      <div class="lightbox-title" id="lightbox-title">Preview</div>
-      <span class="lightbox-close" onclick="closeLightbox(event)">✕</span>
-      <iframe id="lightbox-iframe" src="" frameborder="0"
+      <iframe id="lightbox-iframe" src="" frameborder="0" loading="lazy"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
       <video id="lightbox-video" controls autoplay playsinline
@@ -1195,13 +1173,13 @@
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
 
   <!-- App scripts: at body-end, no defer needed -->
-  <script src="script.js"></script>
+  <script src="assets/js/script.min.js"></script>
   <!-- Premium 3D Masonry Showcase -->
-  <script src="showcase.js"></script>
-  <script src="mobile-perf.js"></script>
-  <script src="features.js"></script>
+  <script src="assets/js/showcase.min.js"></script>
+  <script src="assets/js/mobile-perf.min.js"></script>
+  <script src="assets/js/features.min.js"></script>
   <!-- soundfix.js removed: duplicate of extras.js audio logic -->
-  <script src="extras.js"></script>
+  <script src="assets/js/extras.min.js"></script>
 
   <!-- Three.js: loaded dynamically AFTER page interactive — zero impact on LCP/FCP -->
   <script>
@@ -1214,6 +1192,18 @@
         document.head.appendChild(s);
       }, 2000); // 2s after load — user is already interacting
     });
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(reg => {
+          console.log('ServiceWorker registered:', reg.scope);
+        }).catch(err => {
+          console.log('ServiceWorker registration failed:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>
+
