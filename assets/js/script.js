@@ -538,15 +538,15 @@ const lenis = new Lenis({
   touchMultiplier: 1.5
 });
 
-/* RAF loop removed â€” GSAP ticker already calls lenis.raf() below, running it twice caused double updates */
-
+/* RAF loop for Lenis */
 gsap.registerPlugin(ScrollTrigger);
 lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => {
-  // GSAP aur Lenis ko sync rakhta hai taki scroll animations smooth chalti rahein.
-  lenis.raf(time * 1000);
-});
-gsap.ticker.lagSmoothing(0);
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
 
 ScrollTrigger.create({
   // Navbar ko scroll ke baad solid background dene ke liye.

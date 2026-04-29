@@ -26,10 +26,7 @@ function initVideoOptimization() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Use a slight timeout to prevent play() interruption errors during fast scrolling
-        setTimeout(() => {
-            if(entry.isIntersecting) entry.target.play().catch(e => console.log('Autoplay prevented:', e));
-        }, 150);
+        entry.target.play().catch(e => console.log('Autoplay prevented:', e));
       } else {
         entry.target.pause();
       }
